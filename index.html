@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小六壬神课 - 传统起卦工具</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="传统小六壬起卦工具，古法神机妙算，趋吉避凶">
+    <meta name="theme-color" content="#A42A28">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="小六壬">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="shortcut icon" href="icon-192.png">
+    <style>
+        /* 引入Google Fonts - 思源宋体和仿宋体 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #F5F1E9 0%, #F2EDDD 100%);
+            color: #2E2E2E;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #EFEADF;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(46, 46, 46, 0.08);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #A42A28 0%, #8B241F 100%);
+            color: #F5F1E9;
+            text-align: center;
+            padding: 32px 24px;
+        }
+        
+        .main-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 32px 24px;
+        }
+        
+        .section {
+            margin-bottom: 32px;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #2E2E2E;
+            border-bottom: 2px solid #A98B4F;
+            padding-bottom: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #2E2E2E;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            height: 80px;
+            background: #F5F1E9;
+            border: 1px solid #D1CBBF;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 16px;
+            color: #2E2E2E;
+            resize: vertical;
+            transition: border-color 250ms ease;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: #A98B4F;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            background: transparent;
+            border: 1px solid #D1CBBF;
+            border-radius: 4px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 250ms ease;
+            flex: 1;
+        }
+        
+        .radio-option:hover {
+            border-color: #A98B4F;
+        }
+        
+        .radio-option.selected {
+            background: #A42A28;
+            border-color: #A42A28;
+            color: #F5F1E9;
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+        }
+        
+        .lunar-inputs {
+            display: none;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .lunar-inputs.show {
+            display: flex;
+        }
+        
+        .lunar-select {
+            flex: 1;
+            background: #F5F1E9;
+            border: 1px solid #D1CBBF;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 16px;
+            color: #2E2E2E;
+        }
+        
+        .numbers-input {
+            display: none;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .numbers-input.show {
+            display: flex;
+        }
+        
+        .number-input {
+            flex: 1;
+            background: #F5F1E9;
+            border: 1px solid #D1CBBF;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 16px;
+            text-align: center;
+            color: #2E2E2E;
+        }
+        
+        .number-input:focus {
+            outline: none;
+            border-color: #A98B4F;
+        }
+        
+        .submit-btn {
+            background: #A42A28;
+            color: #F5F1E9;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 48px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 250ms ease;
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .submit-btn:hover {
+            background: #C0322F;
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            background: #6D6D6D;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-section {
+            display: none;
+            border-top: 1px solid #D1CBBF;
+            padding-top: 32px;
+            margin-top: 32px;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        .divination-summary {
+            background: #F5F1E9;
+            padding: 24px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            border-left: 4px solid #A98B4F;
+        }
+        
+        .summary-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #A98B4F;
+        }
+        
+        .summary-content {
+            font-size: 24px;
+            font-weight: 500;
+            text-align: center;
+            color: #2E2E2E;
+        }
+        
+        .divine-god {
+            margin: 0 8px;
+        }
+        
+        .god-jious {
+            color: #3E7765;
+        }
+        
+        .god-xiong {
+            color: #8B4513;
+        }
+        
+        .god-details {
+            margin-top: 24px;
+        }
+        
+        .god-card {
+            background: transparent;
+            border: 1px dashed #D1CBBF;
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .god-name {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .god-quote {
+            font-size: 16px;
+            font-style: italic;
+            color: #6D6D6D;
+            margin-bottom: 12px;
+        }
+        
+        .god-explanation {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #2E2E2E;
+        }
+        
+        .advice-section {
+            background: #F5F1E9;
+            padding: 24px;
+            border-radius: 4px;
+            margin-top: 24px;
+            border-left: 4px solid #A98B4F;
+        }
+        
+        .advice-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: #A98B4F;
+        }
+        
+        .advice-content {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #2E2E2E;
+        }
+        
+        .reset-btn {
+            background: transparent;
+            color: #A98B4F;
+            border: 1px solid #A98B4F;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 250ms ease;
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .reset-btn:hover {
+            background: #A98B4F;
+            color: #F5F1E9;
+        }
+        
+        .copy-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .copy-btn {
+            background: #3E7765;
+            color: #F5F1E9;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 250ms ease;
+            font-family: 'Noto Serif SC', serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .copy-btn:hover {
+            background: #2D5F47;
+            transform: translateY(-1px);
+        }
+        
+        .copy-btn:disabled {
+            background: #6D6D6D;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .copy-icon {
+            font-size: 16px;
+        }
+        
+        .copy-text {
+            font-weight: 500;
+        }
+        
+        .copy-feedback {
+            font-size: 14px;
+            color: #3E7765;
+            font-weight: 500;
+        }
+        
+        .success-text {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+            
+            .main-title {
+                font-size: 36px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+            
+            .lunar-inputs {
+                flex-direction: column;
+            }
+            
+            .numbers-input {
+                flex-direction: column;
+            }
+            
+            .content {
+                padding: 24px 16px;
+            }
+            
+            /* 优化移动端触摸体验 */
+            .radio-option, .lunar-select, .number-input {
+                min-height: 48px;
+                font-size: 16px; /* 防止iOS缩放 */
+            }
+            
+            .submit-btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 16px;
+            }
+            
+            .form-textarea {
+                font-size: 16px; /* 防止iOS缩放 */
+            }
+            
+            /* 移动端优化滚动 */
+            .result-section {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* 优化文字大小防止缩放 */
+            .god-name {
+                font-size: 18px;
+            }
+            
+            .god-explanation {
+                font-size: 15px;
+            }
+            
+            .summary-content {
+                font-size: 20px;
+            }
+            
+            /* 移动端安装按钮优化 */
+            .install-button-mobile {
+                bottom: 16px !important;
+                font-size: 13px !important;
+                padding: 10px 20px !important;
+            }
+            
+            /* 移动端复制按钮优化 */
+            .copy-btn {
+                min-height: 44px;
+                font-size: 15px;
+                padding: 10px 16px;
+            }
+            
+            .copy-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .copy-feedback {
+                text-align: center;
+            }
+        }
+        
+        /* 移动端横屏优化 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .header {
+                padding: 20px 24px;
+            }
+            
+            .main-title {
+                font-size: 28px;
+                margin-bottom: 4px;
+            }
+            
+            .content {
+                padding: 16px;
+            }
+        }
+        
+        /* iOS Safari特定优化 */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                -webkit-user-select: none;
+                user-select: none;
+            }
+            
+            .form-textarea, .number-input, input, select, textarea {
+                -webkit-user-select: text;
+                user-select: text;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #A98B4F;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 高对比度模式支持 */
+        @media (prefers-contrast: high) {
+            .container {
+                border: 2px solid #2E2E2E;
+            }
+            
+            .god-jious {
+                color: #2D5F47 !important;
+                font-weight: bold;
+            }
+            
+            .god-xiong {
+                color: #654321 !important;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">小六壬神课</h1>
+            <p class="subtitle">古法起卦 · 神机妙算 · 趋吉避凶</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">输入测算信息</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">请输入您想测算的问题：</label>
+                    <textarea class="form-textarea" id="question" placeholder="请在此输入您想测算的问题，如'今日出行是否顺利？'、'本月工作运势如何？'等"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">选择起卦方式：</label>
+                    <div class="radio-group">
+                        <div class="radio-option selected" data-value="numbers">
+                            <input type="radio" name="divination-type" value="numbers" checked>
+                            随机三数
+                        </div>
+                        <div class="radio-option" data-value="lunar">
+                            <input type="radio" name="divination-type" value="lunar">
+                            阴历时辰
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="numbers-input show" id="numbers-input">
+                        <input type="number" class="number-input" id="num1" placeholder="第一个数字" min="1" max="999">
+                        <input type="number" class="number-input" id="num2" placeholder="第二个数字" min="1" max="999">
+                        <input type="number" class="number-input" id="num3" placeholder="第三个数字" min="1" max="999">
+                    </div>
+                    
+                    <div class="lunar-inputs" id="lunar-input">
+                        <select class="lunar-select" id="lunar-month">
+                            <option value="">选择阴历月份</option>
+                            <option value="1">正月</option>
+                            <option value="2">二月</option>
+                            <option value="3">三月</option>
+                            <option value="4">四月</option>
+                            <option value="5">五月</option>
+                            <option value="6">六月</option>
+                            <option value="7">七月</option>
+                            <option value="8">八月</option>
+                            <option value="9">九月</option>
+                            <option value="10">十月</option>
+                            <option="11">冬月</option>
+                            <option value="12">腊月</option>
+                        </select>
+                        <select class="lunar-select" id="lunar-day">
+                            <option value="">选择日期</option>
+                        </select>
+                        <select class="lunar-select" id="lunar-hour">
+                            <option value="">选择时辰</option>
+                            <option value="1">子时 (23:00-1:00)</option>
+                            <option value="2">丑时 (1:00-3:00)</option>
+                            <option value="3">寅时 (3:00-5:00)</option>
+                            <option value="4">卯时 (5:00-7:00)</option>
+                            <option value="5">辰时 (7:00-9:00)</option>
+                            <option value="6">巳时 (9:00-11:00)</option>
+                            <option value="7">午时 (11:00-13:00)</option>
+                            <option value="8">未时 (13:00-15:00)</option>
+                            <option value="9">申时 (15:00-17:00)</option>
+                            <option value="10">酉时 (17:00-19:00)</option>
+                            <option value="11">戌时 (19:00-21:00)</option>
+                            <option value="12">亥时 (21:00-23:00)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button class="submit-btn" id="submit-btn">开始测算</button>
+                </div>
+            </div>
+            
+            <div class="result-section" id="result-section">
+                <h2 class="section-title">推演结果</h2>
+                
+                <div class="divination-summary">
+                    <div class="summary-title">卦象总览</div>
+                    <div class="summary-content" id="summary-content">
+                        <!-- 结果将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <div class="god-details" id="god-details">
+                    <!-- 六神详解将通过JavaScript动态生成 -->
+                </div>
+                
+                <div class="advice-section">
+                    <div class="advice-title">生成AI指令</div>
+                    <div class="advice-content" id="advice-content">
+                        <!-- 建议将通过JavaScript动态生成 -->
+                    </div>
+                    <div class="copy-section" style="margin-top: 16px;">
+                        <button class="copy-btn" id="copy-btn">
+                            <span class="copy-icon">📋</span>
+                            <span class="copy-text">复制指令</span>
+                        </button>
+                        <div class="copy-feedback" id="copy-feedback" style="display: none;">
+                            <span class="success-text">✓ 已复制到剪贴板</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <button class="reset-btn" id="reset-btn">重新测算</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 六神数据定义
+        const godsData = {
+            '大安': {
+                isJious: true,
+                quote: '大安事事昌，求财在坤方，失物去不远，宅舍保安康',
+                explanation: '大安为青龙木，属春天，位在东方。大安主静、不动、吉利，预示事情发展平顺安稳。卦象显示所问之事根基稳固，虽然进展可能缓慢，但最终会有好的结果。行人身未动，病者主无妨。求谋宜守正，不宜急进。',
+                characteristics: '静、安稳、吉利、根基稳固、进展缓慢但最终顺利'
+            },
+            '留连': {
+                isJious: false,
+                quote: '留连事难成，求谋日未明，官事只宜缓，去者未回程',
+                explanation: '留连为四方土，属四季，位在四角。留连主慢、反复、拖延，代表事情进展缓慢，需要耐心等待。此卦提示当前时机未到，不宜急躁行事，应当从容应对，顺势而为。虽然过程曲折，但结果未必不佳。',
+                characteristics: '缓慢、反复、拖延、需要耐心、不宜急进'
+            },
+            '速喜': {
+                isJious: true,
+                quote: '速喜喜来临，求财向南行，失物申午未，逢人路上寻',
+                explanation: '速喜为朱雀火，属夏季，位在南方。速喜主动、快速、吉利，象征事情会迅速有进展，好消息即将到来。此卦极为吉利，预示所问之事将快速得到解决，结果令人满意。宜把握时机，积极行动。',
+                characteristics: '快速、吉利、进展迅速、好消息即将到来、宜把握时机'
+            },
+            '赤口': {
+                isJious: false,
+                quote: '赤口主口舌，求财在西南，失物申酉戌，逢人路上难',
+                explanation: '赤口为白虎金，属秋季，位在西方。赤口主吵、意见不和，代表容易有口舌之争，需要谨慎言行。此卦提醒在处理相关事务时要格外小心，避免冲突，注意沟通方式。虽然过程可能不太顺利，但若能谨慎应对，危机亦是转机。',
+                characteristics: '口舌、意见不合、需要谨慎、避免冲突、化危为机'
+            },
+            '小吉': {
+                isJious: true,
+                quote: '小吉暗中求，求财向北方，失物亥子丑，逢人路上谋',
+                explanation: '小吉为玄武水，属冬季，位在北方。小吉主动、缓慢、吉利，预示事情虽有小阻，但整体向好发展。此卦象征虽有小的困难需要克服，但最终会有小而稳定的好结果。宜稳步推进，不宜贪快。',
+                characteristics: '缓慢、吉利、小有困难、稳步推进、稳定发展'
+            },
+            '空亡': {
+                isJious: false,
+                quote: '空亡事不祥，求财无主张，进身不可喜，退步保安康',
+                explanation: '空亡为勾陈土，不在四季，位在中央。空亡主无、遇好则好遇坏则坏，代表当前情况变化未定，结果模糊。此卦提示所问之事目前缺乏明确的征兆，需要更多的观察和等待。天时、地利、人和未完全具备，宜韬光养晦，以待时机。',
+                characteristics: '变化未定、缺乏明确征兆、需要观察等待、时机未到'
+            }
+        };
+        
+        // 六神顺序
+        const godsOrder = ['大安', '留连', '速喜', '赤口', '小吉', '空亡'];
+        
+        // DOM元素获取
+        const questionInput = document.getElementById('question');
+        const radioOptions = document.querySelectorAll('.radio-option');
+        const numbersInput = document.getElementById('numbers-input');
+        const lunarInput = document.getElementById('lunar-input');
+        const lunarDaySelect = document.getElementById('lunar-day');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultSection = document.getElementById('result-section');
+        const summaryContent = document.getElementById('summary-content');
+        const godDetails = document.getElementById('god-details');
+        const adviceContent = document.getElementById('advice-content');
+        const resetBtn = document.getElementById('reset-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        
+        // 初始化日期选择
+        function initDaySelect() {
+            lunarDaySelect.innerHTML = '<option value="">选择日期</option>';
+            for (let i = 1; i <= 30; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + '日';
+                lunarDaySelect.appendChild(option);
+            }
+        }
+        
+        // 切换起卦方式
+        function switchDivinationType(type) {
+            radioOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.value === type) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            if (type === 'numbers') {
+                numbersInput.classList.add('show');
+                lunarInput.classList.remove('show');
+            } else {
+                numbersInput.classList.remove('show');
+                lunarInput.classList.add('show');
+            }
+        }
+        
+        // 获取三个数字
+        function getThreeNumbers() {
+            const type = document.querySelector('.radio-option.selected').dataset.value;
+            
+            if (type === 'numbers') {
+                const num1 = parseInt(document.getElementById('num1').value);
+                const num2 = parseInt(document.getElementById('num2').value);
+                const num3 = parseInt(document.getElementById('num3').value);
+                
+                if (!num1 || !num2 || !num3) {
+                    throw new Error('请输入三个完整的数字');
+                }
+                
+                return [num1, num2, num3];
+            } else {
+                const month = parseInt(document.getElementById('lunar-month').value);
+                const day = parseInt(document.getElementById('lunar-day').value);
+                const hour = parseInt(document.getElementById('lunar-hour').value);
+                
+                if (!month || !day || !hour) {
+                    throw new Error('请选择完整的阴历月、日、时辰');
+                }
+                
+                return [month, day, hour];
+            }
+        }
+        
+        // 小六壬算法：获取第六个位置上的神
+        function getGodAtPosition(startGod, count) {
+            const startIndex = godsOrder.indexOf(startGod);
+            const targetIndex = (startIndex + count - 1) % 6;
+            return godsOrder[targetIndex];
+        }
+        
+        // 计算卦象
+        function calculateDivination(numbers) {
+            const [num1, num2, num3] = numbers;
+            
+            // 第一个神：从大安开始数到第一个数字
+            const firstGod = getGodAtPosition('大安', num1);
+            
+            // 第二个神：从第一个神开始数到第二个数字
+            const secondGod = getGodAtPosition(firstGod, num2);
+            
+            // 第三个神：从第二个神开始数到第三个数字
+            const thirdGod = getGodAtPosition(secondGod, num3);
+            
+            return [firstGod, secondGod, thirdGod];
+        }
+        
+        // 生成结果
+        function generateResult(gods, question) {
+            // 生成卦象总览
+            const summaryHTML = gods.map(god => {
+                const isJious = godsData[god].isJious;
+                const className = isJious ? 'god-jious' : 'god-xiong';
+                return `<span class="divine-god ${className}">${god}</span>`;
+            }).join(' → ');
+            summaryContent.innerHTML = summaryHTML;
+            
+            // 生成六神详解
+            const detailsHTML = gods.map(god => {
+                const data = godsData[god];
+                const className = data.isJious ? 'god-jious' : 'god-xiong';
+                
+                return `
+                    <div class="god-card">
+                        <div class="god-name ${className}">${god}</div>
+                        <div class="god-quote">"${data.quote}"</div>
+                        <div class="god-explanation">${data.explanation}</div>
+                    </div>
+                `;
+            }).join('');
+            godDetails.innerHTML = detailsHTML;
+            
+            // 生成建议
+            const adviceHTML = generateAdvice(gods, question);
+            adviceContent.innerHTML = adviceHTML;
+        }
+        
+        // 生成建议
+        function generateAdvice(gods, question) {
+            // 生成AI指令格式的建议
+            const aiInstruction = `我用小六壬起课，所询问的问题是：${question}，得到的三个用神分别为：${gods.join('、')}，请帮我详细解释。`;
+            
+            return aiInstruction;
+        }
+        
+        // 复制功能
+        async function copyToClipboard(text) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    // 使用现代 Clipboard API
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                } else {
+                    // 备用方法：使用传统的 execCommand
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = '0';
+                    textArea.style.pointerEvents = 'none';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    return successful;
+                }
+            } catch (err) {
+                console.error('复制失败:', err);
+                return false;
+            }
+        }
+        
+        // 显示复制反馈
+        function showCopyFeedback() {
+            const feedback = document.getElementById('copy-feedback');
+            feedback.style.display = 'block';
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 错误处理优化
+        function handleError(error, context = '') {
+            console.error('小六壬应用错误:', error, '上下文:', context);
+            
+            // 友好的错误提示
+            const errorMsg = error.message || '发生了未知错误';
+            if (errorMsg.includes('网络') || errorMsg.includes('联网')) {
+                alert('网络连接异常，但离线功能仍然可用');
+            } else if (errorMsg.includes('服务')) {
+                alert('服务暂时不可用，请稍后重试');
+            } else {
+                alert('操作失败：' + errorMsg);
+            }
+        }
+        
+        // 事件监听器
+        radioOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                switchDivinationType(option.dataset.value);
+            });
+        });
+        
+        submitBtn.addEventListener('click', () => {
+            const question = questionInput.value.trim();
+            
+            if (!question) {
+                handleError(new Error('请输入您想测算的问题'), 'submit');
+                return;
+            }
+            
+            try {
+                // 显示加载状态
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="loading"></span> 推演中...';
+                
+                setTimeout(() => {
+                    const numbers = getThreeNumbers();
+                    const gods = calculateDivination(numbers);
+                    generateResult(gods, question);
+                    
+                    resultSection.classList.add('show');
+                    resultSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // 移动端触觉反馈
+                    if (navigator.vibrate) {
+                        // 根据吉凶给出不同的振动模式
+                        const jiousCount = gods.filter(god => godsData[god].isJious).length;
+                        if (jiousCount >= 2) {
+                            navigator.vibrate([100, 50, 100]); // 吉利 - 两次短振
+                        } else if (jiousCount === 1) {
+                            navigator.vibrate(200); // 中性 - 一次中振
+                        } else {
+                            navigator.vibrate([50, 100, 50, 100, 50]); // 凶险 - 三次短振
+                        }
+                    }
+                    
+                    // 恢复按钮状态
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '开始测算';
+                }, 500); // 稍微延迟增加仪式感
+                
+            } catch (error) {
+                handleError(error, 'calculate');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '开始测算';
+            }
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            questionInput.value = '';
+            document.getElementById('num1').value = '';
+            document.getElementById('num2').value = '';
+            document.getElementById('num3').value = '';
+            document.getElementById('lunar-month').value = '';
+            document.getElementById('lunar-day').value = '';
+            document.getElementById('lunar-hour').value = '';
+            resultSection.classList.remove('show');
+            questionInput.focus();
+            
+            // 移动端触觉反馈
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+        });
+        
+        // 复制按钮事件监听器
+        copyBtn.addEventListener('click', async () => {
+            const copyText = adviceContent.textContent.trim();
+            
+            if (!copyText) {
+                handleError(new Error('没有可复制的内容'), 'copy');
+                return;
+            }
+            
+            // 显示加载状态
+            copyBtn.disabled = true;
+            const originalText = copyBtn.querySelector('.copy-text').textContent;
+            copyBtn.querySelector('.copy-text').textContent = '复制中...';
+            
+            try {
+                const success = await copyToClipboard(copyText);
+                if (success) {
+                    showCopyFeedback();
+                    
+                    // 移动端触觉反馈
+                    if (navigator.vibrate) {
+                        navigator.vibrate([100, 50, 100]); // 成功反馈
+                    }
+                } else {
+                    throw new Error('复制操作失败');
+                }
+            } catch (error) {
+                handleError(error, 'copy');
+                // 如果复制失败，可以提供手动选择的提示
+                alert('复制失败，请手动选择文本并复制');
+            } finally {
+                // 恢复按钮状态
+                copyBtn.disabled = false;
+                copyBtn.querySelector('.copy-text').textContent = originalText;
+            }
+        });
+
+        
+        // 初始化
+        initDaySelect();
+        
+
+        
+        // Service Worker 注册
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker 注册成功:', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('Service Worker 注册失败:', registrationError);
+                    });
+            });
+        }
+        
+        // PWA 安装提示
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallButton();
+        });
+        
+        function showInstallButton() {
+            const installButton = document.createElement('button');
+            installButton.textContent = '📱 安装到桌面';
+            installButton.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #A42A28;
+                color: #F5F1E9;
+                border: none;
+                border-radius: 25px;
+                padding: 12px 24px;
+                font-size: 14px;
+                font-weight: 500;
+                box-shadow: 0 4px 12px rgba(164, 42, 40, 0.3);
+                cursor: pointer;
+                z-index: 1000;
+                transition: all 250ms ease;
+                font-family: 'Noto Serif SC', serif;
+            `;
+            
+            installButton.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    installButton.remove();
+                }
+            });
+            
+            document.body.appendChild(installButton);
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                if (installButton.parentNode) {
+                    installButton.style.opacity = '0';
+                    installButton.style.transform = 'translateX(-50%) translateY(10px)';
+                    setTimeout(() => installButton.remove(), 300);
+                }
+            }, 8000);
+        }
+    </script>
+</body>
+</html>

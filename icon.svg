@@ -1,0 +1,24 @@
+<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="96" cy="96" r="88" fill="#A42A28" stroke="#8B241F" stroke-width="4"/>
+  
+  <!-- 内圈 -->
+  <circle cx="96" cy="96" r="70" fill="#F5F1E9" stroke="#A98B4F" stroke-width="2"/>
+  
+  <!-- "六"字 -->
+  <text x="96" y="110" text-anchor="middle" font-family="serif" font-size="48" font-weight="bold" fill="#A42A28">六</text>
+  
+  <!-- 装饰点 -->
+  <circle cx="96" cy="60" r="3" fill="#A98B4F"/>
+  <circle cx="132" cy="80" r="3" fill="#A98B4F"/>
+  <circle cx="132" cy="112" r="3" fill="#A98B4F"/>
+  <circle cx="96" cy="132" r="3" fill="#A98B4F"/>
+  <circle cx="60" cy="112" r="3" fill="#A98B4F"/>
+  <circle cx="60" cy="80" r="3" fill="#A98B4F"/>
+  
+  <!-- 外围装饰 -->
+  <path d="M 96 20 Q 120 32 132 56" stroke="#A98B4F" stroke-width="2" fill="none"/>
+  <path d="M 172 96 Q 160 120 136 132" stroke="#A98B4F" stroke-width="2" fill="none"/>
+  <path d="M 96 172 Q 72 160 60 136" stroke="#A98B4F" stroke-width="2" fill="none"/>
+  <path d="M 20 96 Q 32 72 56 60" stroke="#A98B4F" stroke-width="2" fill="none"/>
+</svg>
