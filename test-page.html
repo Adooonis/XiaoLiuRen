@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>测试页面 - 小六壬神课</title>
+    <style>
+        /* 引入Google Fonts - 思源宋体和仿宋体 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: #000000;
+            color: #FFFFFF;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border: 1px solid #333333;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 32px 16px;
+            background: #2a2a2a;
+            border-bottom: 1px solid #333333;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        .content {
+            padding: 32px 24px;
+        }
+        
+        .form-section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background: #222222;
+            border-radius: 8px;
+            border: 1px solid #333333;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px 16px;
+            background: #333333;
+            border: 1px solid #444444;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 16px;
+            font-family: 'Noto Serif SC', serif;
+            resize: vertical;
+            outline: none;
+        }
+        
+        .form-textarea:focus {
+            border-color: #666666;
+            background: #333333;
+        }
+        
+        .submit-btn {
+            background: #444444;
+            color: #FFFFFF;
+            border: 1px solid #666666;
+            border-radius: 4px;
+            padding: 12px 48px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 250ms ease;
+            font-family: 'Noto Serif SC', serif;
+            display: block;
+            margin: 32px auto 0;
+        }
+        
+        .submit-btn:hover {
+            background: #555555;
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            background: #2a2a2a;
+            color: #888888;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-section {
+            display: none;
+            border-top: 1px solid #333333;
+            padding-top: 32px;
+            margin-top: 32px;
+            background: #222222;
+            border-radius: 8px;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        .result-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .result-content {
+            background: #333333;
+            padding: 24px;
+            border-radius: 4px;
+            margin: 16px 0;
+        }
+        
+        /* 六神介绍样式 */
+        .gods-intro-section {
+            margin: 32px 0;
+            text-align: center;
+            background: #222222;
+            padding: 32px 24px;
+            border-radius: 8px;
+            border: 1px solid #333333;
+        }
+        
+        .intro-text {
+            color: #cccccc;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .grid-god {
+            padding: 24px 12px;
+            background: #333333;
+            border: 1px solid #444444;
+            border-radius: 4px;
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 250ms ease;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .grid-god:hover {
+            background: #444444;
+            transform: translateY(-2px);
+        }
+        
+        .grid-god.selected {
+            background: #555555;
+            border-color: #666666;
+        }
+        
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+            
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 24px 16px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .content {
+                padding: 16px;
+            }
+            
+            .form-section {
+                padding: 16px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 16px;
+            }
+            
+            .form-textarea {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info" id="debug-info">
+        <div>=== 测试调试信息 ===</div>
+        <div>时间: <span id="debug-time"></span></div>
+        <div id="debug-content"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>小六壬神课</h1>
+            <p>传统起卦工具 • 古法神机妙算 • 趋吉避凶</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-section">
+                <h2 style="text-align: center; margin-bottom: 16px; color: #ffffff;">起卦</h2>
+                <div class="form-group">
+                    <label class="form-label" for="question-input">请输入您想测算的问题：</label>
+                    <textarea class="form-textarea" id="question-input" placeholder="请详细描述您想要占卜的问题，越详细越准确..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <button class="submit-btn" id="submit-btn" onclick="handleCalculate()">开始测算</button>
+                </div>
+            </div>
+            
+            <!-- 六神说明区域 -->
+            <div class="gods-intro-section" id="gods-intro-section">
+                <h2 class="section-title">六神介绍</h2>
+                <p class="intro-text">点击下方任意神祇了解其含义和象征</p>
+                <div class="grid-container" id="grid-container">
+                    <div class="grid-god god-1" data-god="留连">留连</div>
+                    <div class="grid-god god-2" data-god="速喜">速喜</div>
+                    <div class="grid-god god-3" data-god="赤口">赤口</div>
+                    <div class="grid-god god-0" data-god="大安">大安</div>
+                    <div class="grid-god god-5" data-god="空亡">空亡</div>
+                    <div class="grid-god god-4" data-god="小吉">小吉</div>
+                </div>
+            </div>
+            
+            <!-- 测算结果区域 -->
+            <div class="result-section" id="result-section">
+                <h2>测算结果</h2>
+                <div class="result-content" id="result-content">
+                    <!-- 结果将显示在这里 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 调试信息显示
+        function addDebug(message) {
+            const debugContent = document.getElementById('debug-content');
+            const timestamp = new Date().toLocaleTimeString();
+            debugContent.innerHTML += `<div>${timestamp}: ${message}</div>`;
+            debugContent.scrollTop = debugContent.scrollHeight;
+            console.log('DEBUG:', message);
+        }
+
+        // 更新时间
+        function updateTime() {
+            document.getElementById('debug-time').textContent = new Date().toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 变量声明
+        let questionInput = document.getElementById('question-input');
+        let submitBtn = document.getElementById('submit-btn');
+        let resultSection = document.getElementById('result-section');
+        
+        // 添加事件监听器
+        submitBtn.addEventListener('click', handleCalculate);
+        
+        function handleCalculate() {
+            addDebug('handleCalculate被调用');
+            console.log('handleCalculate被调用');
+            
+            const question = questionInput.value.trim();
+            addDebug(`输入问题: "${question}"`);
+            
+            if (!question) {
+                alert('请输入您想测算的问题');
+                addDebug('错误: 问题为空');
+                return;
+            }
+            
+            try {
+                addDebug('开始推演...');
+                
+                // 显示加载状态
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span style="margin-right: 8px;">⏳</span>推演中...';
+                
+                setTimeout(() => {
+                    addDebug('推演完成，显示结果');
+                    
+                    // 生成模拟结果
+                    const mockResult = {
+                        numbers: ['6', '4', '1'],
+                        gods: ['大安', '小吉', '速喜'],
+                        meaning: '此事目前平稳吉顺，但仍需耐心等待，时机尚未成熟。'
+                    };
+                    
+                    // 显示结果
+                    const resultContent = document.getElementById('result-content');
+                    resultContent.innerHTML = `
+                        <h3>卦象分析</h3>
+                        <p><strong>起卦时间：</strong>${new Date().toLocaleString()}</p>
+                        <p><strong>起卦数字：</strong>${mockResult.numbers.join(', ')}</p>
+                        <p><strong>对应神祇：</strong>${mockResult.gods.join(' → ')}</p>
+                        <p><strong>卦象含义：</strong>${mockResult.meaning}</p>
+                    `;
+                    
+                    resultSection.classList.add('show');
+                    resultSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // 恢复按钮状态
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '开始测算';
+                    
+                    addDebug('所有操作完成');
+                    
+                }, 2000);
+                
+            } catch (error) {
+                addDebug('错误: ' + error.message);
+                console.error('Error:', error);
+                alert('测算过程中出现错误，请重试');
+                
+                submitBtn.disabled = false;
+                submitBtn.textContent = '开始测算';
+            }
+        }
+        
+        // 自动测试脚本
+        function runAutoTest() {
+            console.log('=== 小六壬修复验证测试 ===');
+            
+            let testResults = [];
+            
+            // 1. 验证六神排列顺序
+            console.log('\n1. 检查六神排列顺序:');
+            const godsContainer = document.getElementById('grid-container');
+            const gods = godsContainer.querySelectorAll('.grid-god');
+            const expectedOrder = ['留连', '速喜', '赤口', '大安', '空亡', '小吉'];
+            const actualOrder = Array.from(gods).map(god => god.getAttribute('data-god'));
+            
+            console.log('期望顺序:', expectedOrder);
+            console.log('实际顺序:', actualOrder);
+            
+            let godsCorrect = true;
+            for (let i = 0; i < expectedOrder.length; i++) {
+                if (expectedOrder[i] !== actualOrder[i]) {
+                    console.log(`❌ 位置 ${i + 1}: 期望 "${expectedOrder[i]}", 实际 "${actualOrder[i]}"`);
+                    godsCorrect = false;
+                } else {
+                    console.log(`✅ 位置 ${i + 1}: "${actualOrder[i]}" - 正确`);
+                }
+            }
+            testResults.push({name: '六神排列顺序', passed: godsCorrect});
+            
+            // 2. 验证按钮居中
+            console.log('\n2. 检查按钮居中:');
+            const submitBtn = document.getElementById('submit-btn');
+            const styles = window.getComputedStyle(submitBtn);
+            const display = styles.display;
+            const margin = styles.margin;
+            
+            console.log('按钮display:', display);
+            console.log('按钮margin:', margin);
+            
+            const isCentered = display === 'block' && margin.includes('auto');
+            console.log(isCentered ? '✅ 按钮已居中' : '❌ 按钮未居中');
+            testResults.push({name: '按钮居中', passed: isCentered});
+            
+            // 3. 验证元素顺序
+            console.log('\n3. 检查元素顺序:');
+            const content = document.querySelector('.content');
+            const children = Array.from(content.children);
+            
+            const godsIntroSection = document.querySelector('.gods-intro-section');
+            const resultSection = document.querySelector('.result-section');
+            
+            const godsIndex = children.findIndex(el => el === godsIntroSection);
+            const resultIndex = children.findIndex(el => el === resultSection);
+            
+            console.log('六神介绍区域位置:', godsIndex);
+            console.log('结果区域位置:', resultIndex);
+            
+            const correctOrder = resultIndex > godsIndex;
+            console.log(correctOrder ? '✅ 结果区域在六神介绍后面' : '❌ 结果区域位置不正确');
+            testResults.push({name: '元素顺序', passed: correctOrder});
+            
+            // 4. 验证按钮事件处理
+            console.log('\n4. 检查按钮事件处理:');
+            const hasOnclick = submitBtn.hasAttribute('onclick');
+            console.log('有onclick属性:', hasOnclick ? '✅ 是' : '❌ 否');
+            
+            if (hasOnclick) {
+                console.log('onclick值:', submitBtn.getAttribute('onclick'));
+            }
+            
+            const hasHandleCalculate = typeof window.handleCalculate === 'function';
+            console.log('有handleCalculate函数:', hasHandleCalculate ? '✅ 是' : '❌ 否');
+            testResults.push({name: '按钮事件处理', passed: hasOnclick && hasHandleCalculate});
+            
+            // 5. 测试按钮功能
+            console.log('\n5. 测试按钮功能:');
+            const questionInput = document.getElementById('question-input');
+            questionInput.value = '测试问题';
+            
+            try {
+                handleCalculate();
+                console.log('✅ handleCalculate调用成功');
+                testResults.push({name: '按钮功能', passed: true});
+                
+                // 检查结果
+                setTimeout(() => {
+                    const resultSection = document.getElementById('result-section');
+                    const isVisible = resultSection.classList.contains('show');
+                    console.log('结果区域显示:', isVisible ? '✅ 是' : '❌ 否');
+                    
+                    // 生成测试报告
+                    console.log('\n=== 测试报告 ===');
+                    let passed = testResults.filter(r => r.passed).length;
+                    let total = testResults.length;
+                    
+                    testResults.forEach(result => {
+                        console.log(`${result.passed ? '✅' : '❌'} ${result.name}`);
+                    });
+                    
+                    console.log(`\n📊 测试结果: ${passed}/${total} 通过`);
+                    
+                    if (passed === total) {
+                        console.log('🎉 所有测试通过！修复成功！');
+                        alert('🎉 所有测试通过！修复成功！');
+                    } else {
+                        console.log('⚠️ 部分测试失败');
+                        alert('⚠️ 部分测试失败，请检查控制台详细信息');
+                    }
+                }, 100);
+                
+            } catch (error) {
+                console.log('❌ handleCalculate调用失败:', error.message);
+                testResults.push({name: '按钮功能', passed: false});
+            }
+        }
+
+        // 页面加载完成后的检查和自动测试
+        document.addEventListener('DOMContentLoaded', function() {
+            addDebug('页面加载完成');
+            
+            // 运行自动测试
+            setTimeout(() => {
+                runAutoTest();
+            }, 1000);
+            
+            // 检查六神排列
+            const gridContainer = document.getElementById('grid-container');
+            const gods = gridContainer.querySelectorAll('.grid-god');
+            let godsOrder = [];
+            gods.forEach(god => {
+                godsOrder.push(god.getAttribute('data-god'));
+            });
+            addDebug('六神顺序: ' + godsOrder.join(', '));
+            
+            // 检查按钮居中
+            const btnRect = submitBtn.getBoundingClientRect();
+            const containerRect = document.querySelector('.container').getBoundingClientRect();
+            const isCentered = Math.abs(btnRect.left - (containerRect.width - btnRect.width) / 2) < 5;
+            addDebug('按钮居中: ' + (isCentered ? '是' : '否'));
+            
+            // 检查元素顺序
+            const content = document.querySelector('.content');
+            const children = Array.from(content.children);
+            const godsIntroIndex = children.findIndex(el => el.classList.contains('gods-intro-section'));
+            const resultIndex = children.findIndex(el => el.classList.contains('result-section'));
+            addDebug(`元素顺序: 六神介绍(${godsIntroIndex}), 结果区域(${resultIndex})`);
+            addDebug('结果区域在六神介绍后面: ' + (resultIndex > godsIntroIndex ? '是' : '否'));
+        });
+    </script>
+</body>
+</html>

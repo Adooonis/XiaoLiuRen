@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小六壬应用测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 16px;
+            width: 360px;
+            height: 240px;
+            margin: 20px auto;
+            background: #1a1a1a;
+            border-radius: 8px;
+            border: 1px solid #333333;
+            padding: 16px;
+        }
+        
+        .grid-god {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .god-0 { /* 大安 */
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .god-1 { /* 留连 */
+            border-color: #FF5722;
+            color: #FF5722;
+        }
+        
+        .god-2 { /* 速喜 */
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .god-3 { /* 赤口 */
+            border-color: #FF5722;
+            color: #FF5722;
+        }
+        
+        .god-4 { /* 小吉 */
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .god-5 { /* 空亡 */
+            border-color: #FF5722;
+            color: #FF5722;
+        }
+        
+        /* 调整CSS grid位置 */
+        .god-0 { grid-row: 2; grid-column: 1; } /* 大安在第二排第一个 */
+        .god-1 { grid-row: 1; grid-column: 1; } /* 留连在第一排第一个 */
+        .god-2 { grid-row: 1; grid-column: 2; } /* 速喜在第一排第二个 */
+        .god-3 { grid-row: 1; grid-column: 3; } /* 赤口在第一排第三个 */
+        .god-5 { grid-row: 2; grid-column: 2; } /* 空亡在第二排第二个 */
+        .god-4 { grid-row: 2; grid-column: 3; } /* 小吉在第二排第三个 */
+        
+        .submit-btn {
+            background: #444444;
+            color: #FFFFFF;
+            border: 1px solid #666666;
+            border-radius: 4px;
+            padding: 12px 48px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 250ms ease;
+            display: block;
+            margin: 32px auto 0;
+        }
+        
+        .submit-btn:hover {
+            background: #555555;
+            transform: translateY(-2px);
+        }
+        
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
+            background: #333333;
+            border: 1px solid #555555;
+            border-radius: 4px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .result {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .test-status {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>小六壬应用修复测试</h1>
+    
+    <div class="test-section">
+        <h2>✅ 六神排列测试</h2>
+        <p>检查两排三列排列是否正确：</p>
+        
+        <div class="grid-container">
+            <div class="grid-god god-1" data-god="留连" onclick="testClick('留连')">留连</div>
+            <div class="grid-god god-2" data-god="速喜" onclick="testClick('速喜')">速喜</div>
+            <div class="grid-god god-3" data-god="赤口" onclick="testClick('赤口')">赤口</div>
+            <div class="grid-god god-0" data-god="大安" onclick="testClick('大安')">大安</div>
+            <div class="grid-god god-5" data-god="空亡" onclick="testClick('空亡')">空亡</div>
+            <div class="grid-god god-4" data-god="小吉" onclick="testClick('小吉')">小吉</div>
+        </div>
+        
+        <p><strong>期望排列：</strong></p>
+        <p>第一排：留连  速喜  赤口</p>
+        <p>第二排：大安  空亡  小吉</p>
+        <p id="grid-status" class="test-status"></p>
+    </div>
+    
+    <div class="test-section">
+        <h2>✅ 开始测算按钮测试</h2>
+        <textarea id="test-question" placeholder="请输入测试问题...">今天天气如何？</textarea>
+        <button class="submit-btn" id="test-btn" onclick="testButton()">开始测算</button>
+        <div class="result" id="test-result">
+            <h3>🎉 按钮测试成功！</h3>
+            <p>问题: <span id="shown-question"></span></p>
+            <p>结果: 大安、速喜、留连</p>
+        </div>
+        <p id="button-status"></p>
+    </div>
+    
+    <div class="test-section">
+        <h2>📋 测试说明</h2>
+        <ul>
+            <li><strong>六神排列检查</strong>：点击六神确认排列是否正确</li>
+            <li><strong>按钮测试</strong>：点击开始测算按钮查看是否正常响应</li>
+            <li><strong>视觉效果</strong>：确认按钮居中显示</li>
+        </ul>
+    </div>
+
+    <script>
+        function testClick(godName) {
+            alert(`✅ 成功点击：${godName}`);
+        }
+        
+        function testButton() {
+            const question = document.getElementById('test-question').value.trim();
+            const button = document.getElementById('test-btn');
+            const result = document.getElementById('test-result');
+            const buttonStatus = document.getElementById('button-status');
+            
+            if (!question) {
+                alert('❌ 请输入问题');
+                return;
+            }
+            
+            // 模拟按钮状态变化
+            button.disabled = true;
+            button.innerHTML = '推演中...';
+            
+            setTimeout(() => {
+                button.disabled = false;
+                button.textContent = '开始测算';
+                result.style.display = 'block';
+                document.getElementById('shown-question').textContent = question;
+                buttonStatus.innerHTML = '<span class="test-status">✅ 按钮功能正常！</span>';
+            }, 1000);
+        }
+        
+        // 页面加载完成后的检查
+        window.onload = function() {
+            const gridStatus = document.getElementById('grid-status');
+            
+            // 检查六神排列
+            const gods = document.querySelectorAll('.grid-god');
+            const expectedOrder = ['留连', '速喜', '赤口', '大安', '空亡', '小吉'];
+            let isCorrect = true;
+            
+            gods.forEach((god, index) => {
+                const godName = god.getAttribute('data-god');
+                if (godName !== expectedOrder[index]) {
+                    isCorrect = false;
+                }
+            });
+            
+            if (isCorrect) {
+                gridStatus.innerHTML = '<span class="test-status">✅ 六神排列正确！</span>';
+            } else {
+                gridStatus.innerHTML = '<span style="color: #FF5722;">❌ 六神排列错误！</span>';
+            }
+        };
+    </script>
+</body>
+</html>

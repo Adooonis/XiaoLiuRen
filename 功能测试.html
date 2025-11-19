@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>功能测试 - 小六壬神课</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #000; 
+            color: #fff; 
+            padding: 20px;
+            margin: 0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #333;
+        }
+        .test-item { 
+            margin: 15px 0; 
+            padding: 15px; 
+            background: #2a2a2a; 
+            border-radius: 5px;
+            border-left: 4px solid #666;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .info { color: #00aaff; }
+        #test-frame { 
+            width: 100%; 
+            height: 700px; 
+            border: 1px solid #333; 
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .console-log {
+            background: #000;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        .test-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .test-btn {
+            background: #444;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        .test-btn:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔮 小六壬神课 - 功能测试验证</h1>
+        
+        <div class="test-controls">
+            <button class="test-btn" onclick="runFullTest()">🔄 完整测试</button>
+            <button class="test-btn" onclick="clearLog()">🗑️ 清空日志</button>
+            <button class="test-btn" onclick="reloadFrame()">🔁 重新加载</button>
+        </div>
+        
+        <div class="test-item">
+            <h3>📊 测试项目</h3>
+            <div id="test-status">
+                <div class="info">⏳ 点击"完整测试"开始验证所有功能...</div>
+            </div>
+        </div>
+        
+        <div class="console-log" id="console-log">
+            <div>=== 测试控制台 ===</div>
+        </div>
+
+        <iframe src="index.html" id="test-frame"></iframe>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const consoleLog = document.getElementById('console-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : type === 'info' ? 'info' : '';
+            const logEntry = `<div class="${className}">[${timestamp}] ${message}</div>`;
+            consoleLog.innerHTML += logEntry;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+        
+        function clearLog() {
+            document.getElementById('console-log').innerHTML = '<div>=== 测试控制台 ===</div>';
+        }
+        
+        function reloadFrame() {
+            document.getElementById('test-frame').src = 'index.html';
+            log('页面重新加载完成', 'info');
+        }
+        
+        function updateTestStatus(content, isSuccess = null) {
+            const statusElement = document.getElementById('test-status');
+            const className = isSuccess === true ? 'success' : isSuccess === false ? 'error' : 'info';
+            statusElement.innerHTML = `<div class="${className}">${content}</div>`;
+        }
+        
+        function testGodsOrder() {
+            log('\\n=== 测试1: 六神排列顺序 ===');
+            try {
+                const iframe = document.getElementById('test-frame');
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                const gridContainer = iframeDoc.getElementById('grid-container');
+                if (!gridContainer) {
+                    log('❌ 未找到grid-container', 'error');
+                    return false;
+                }
+                
+                const gods = gridContainer.querySelectorAll('.grid-god');
+                const actualOrder = Array.from(gods).map(god => god.getAttribute('data-god'));
+                const expectedOrder = ['留连', '速喜', '赤口', '大安', '空亡', '小吉'];
+                
+                log('期望顺序: ' + expectedOrder.join(' → '));
+                log('实际顺序: ' + actualOrder.join(' → '));
+                
+                let correct = true;
+                for (let i = 0; i < expectedOrder.length; i++) {
+                    if (expectedOrder[i] !== actualOrder[i]) {
+                        log(`❌ 位置 ${i + 1}错误: 期望"${expectedOrder[i]}", 实际"${actualOrder[i]}"`, 'error');
+                        correct = false;
+                    } else {
+                        log(`✅ 位置 ${i + 1}: "${actualOrder[i]}"`, 'success');
+                    }
+                }
+                
+                if (correct) {
+                    log('✅ 六神排列顺序测试通过', 'success');
+                    updateTestStatus('✅ 六神排列顺序: 正确', true);
+                } else {
+                    log('❌ 六神排列顺序测试失败', 'error');
+                    updateTestStatus('❌ 六神排列顺序: 错误', false);
+                }
+                
+                return correct;
+                
+            } catch (error) {
+                log('❌ 六神排列测试出错: ' + error.message, 'error');
+                return false;
+            }
+        }
+        
+        function testButtonFunction() {
+            log('\\n=== 测试2: 按钮功能测试 ===');
+            try {
+                const iframe = document.getElementById('test-frame');
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                const submitBtn = iframeDoc.getElementById('submit-btn');
+                const questionInput = iframeDoc.getElementById('question');
+                
+                if (!submitBtn || !questionInput) {
+                    log('❌ 未找到必要的DOM元素', 'error');
+                    return false;
+                }
+                
+                // 检查onclick属性
+                const hasOnclick = submitBtn.hasAttribute('onclick');
+                log(`按钮onclick属性: ${hasOnclick ? '✅ 有' : '❌ 无'}`);
+                
+                if (hasOnclick) {
+                    log(`onclick值: ${submitBtn.getAttribute('onclick')}`);
+                }
+                
+                // 检查handleCalculate函数
+                const iframeWindow = iframe.contentWindow;
+                const hasHandleCalculate = typeof iframeWindow.handleCalculate === 'function';
+                log(`handleCalculate函数: ${hasHandleCalculate ? '✅ 存在' : '❌ 不存在'}`);
+                
+                if (hasHandleCalculate) {
+                    log('✅ 按钮功能测试通过', 'success');
+                    updateTestStatus('✅ 按钮功能: 正常', true);
+                } else {
+                    log('❌ 按钮功能测试失败', 'error');
+                    updateTestStatus('❌ 按钮功能: 异常', false);
+                }
+                
+                return hasOnclick && hasHandleCalculate;
+                
+            } catch (error) {
+                log('❌ 按钮功能测试出错: ' + error.message, 'error');
+                return false;
+            }
+        }
+        
+        function testButtonClick() {
+            log('\\n=== 测试3: 按钮点击测试 ===');
+            try {
+                const iframe = document.getElementById('test-frame');
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                const submitBtn = iframeDoc.getElementById('submit-btn');
+                const questionInput = iframeDoc.getElementById('question');
+                
+                if (!submitBtn || !questionInput) {
+                    log('❌ 未找到必要元素进行点击测试', 'error');
+                    return false;
+                }
+                
+                // 设置测试问题
+                questionInput.value = '测试问题：今日运势如何？';
+                log('设置测试问题: "' + questionInput.value + '"');
+                
+                // 模拟点击
+                const originalText = submitBtn.textContent;
+                log(`原始按钮文字: "${originalText}"`);
+                
+                // 调用handleCalculate
+                const iframeWindow = iframe.contentWindow;
+                iframeWindow.handleCalculate();
+                
+                log('✅ handleCalculate调用成功', 'success');
+                
+                // 等待一段时间检查结果
+                setTimeout(() => {
+                    const newText = submitBtn.textContent;
+                    log(`点击后按钮文字: "${newText}"`);
+                    
+                    if (newText.includes('推演中')) {
+                        log('✅ 按钮显示加载状态', 'success');
+                    } else {
+                        log('⚠️ 按钮未显示加载状态', 'info');
+                    }
+                }, 500);
+                
+                return true;
+                
+            } catch (error) {
+                log('❌ 按钮点击测试出错: ' + error.message, 'error');
+                return false;
+            }
+        }
+        
+        function runFullTest() {
+            log('🚀 开始完整功能测试...', 'info');
+            updateTestStatus('⏳ 正在测试...', null);
+            
+            setTimeout(() => {
+                const test1 = testGodsOrder();
+                
+                setTimeout(() => {
+                    const test2 = testButtonFunction();
+                    
+                    setTimeout(() => {
+                        const test3 = testButtonClick();
+                        
+                        // 生成最终报告
+                        setTimeout(() => {
+                            const allPassed = test1 && test2;
+                            
+                            log('\\n=== 最终测试报告 ===');
+                            if (allPassed) {
+                                log('🎉 所有测试通过！功能修复成功！', 'success');
+                                updateTestStatus('🎉 所有测试通过！功能修复成功！', true);
+                            } else {
+                                log('⚠️ 部分测试失败，请检查详细信息', 'error');
+                                updateTestStatus('⚠️ 部分测试失败，请检查控制台', false);
+                            }
+                        }, 1000);
+                        
+                    }, 1000);
+                    
+                }, 1000);
+                
+            }, 1000);
+        }
+        
+        // 页面加载完成后自动测试
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                log('页面加载完成，开始测试...', 'info');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

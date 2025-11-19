@@ -33,8 +33,8 @@
         
         body {
             font-family: 'Noto Serif SC', serif;
-            background: linear-gradient(135deg, #F5F1E9 0%, #F2EDDD 100%);
-            color: #2E2E2E;
+            background: #000000;
+            color: #FFFFFF;
             min-height: 100vh;
             padding: 16px;
         }
@@ -42,33 +42,38 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #EFEADF;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(46, 46, 46, 0.08);
+            background: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
             overflow: hidden;
+            border: 1px solid #333333;
         }
         
         .header {
-            background: linear-gradient(135deg, #A42A28 0%, #8B241F 100%);
-            color: #F5F1E9;
+            background: #000000;
+            color: #FFFFFF;
             text-align: center;
             padding: 32px 24px;
+            border-bottom: 1px solid #333333;
         }
         
         .main-title {
             font-size: 48px;
             font-weight: 700;
             margin-bottom: 8px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 8px rgba(255,255,255,0.2);
+            color: #FFFFFF;
         }
         
         .subtitle {
             font-size: 18px;
-            opacity: 0.9;
+            opacity: 0.8;
+            color: #CCCCCC;
         }
         
         .content {
             padding: 32px 24px;
+            background: #1a1a1a;
         }
         
         .section {
@@ -79,8 +84,8 @@
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 24px;
-            color: #2E2E2E;
-            border-bottom: 2px solid #A98B4F;
+            color: #FFFFFF;
+            border-bottom: 2px solid #666666;
             padding-bottom: 8px;
         }
         
@@ -93,26 +98,26 @@
             font-size: 16px;
             font-weight: 500;
             margin-bottom: 8px;
-            color: #2E2E2E;
+            color: #FFFFFF;
         }
         
         .form-textarea {
             width: 100%;
             height: 80px;
-            background: #F5F1E9;
-            border: 1px solid #D1CBBF;
+            background: #333333;
+            border: 1px solid #555555;
             border-radius: 4px;
             padding: 12px;
             font-family: 'Noto Serif SC', serif;
             font-size: 16px;
-            color: #2E2E2E;
+            color: #FFFFFF;
             resize: vertical;
             transition: border-color 250ms ease;
         }
         
         .form-textarea:focus {
             outline: none;
-            border-color: #A98B4F;
+            border-color: #888888;
         }
         
         .radio-group {
@@ -125,22 +130,24 @@
             display: flex;
             align-items: center;
             background: transparent;
-            border: 1px solid #D1CBBF;
+            border: 1px solid #666666;
             border-radius: 4px;
             padding: 12px 16px;
             cursor: pointer;
             transition: all 250ms ease;
             flex: 1;
+            color: #CCCCCC;
         }
         
         .radio-option:hover {
-            border-color: #A98B4F;
+            border-color: #888888;
+            color: #FFFFFF;
         }
         
         .radio-option.selected {
-            background: #A42A28;
-            border-color: #A42A28;
-            color: #F5F1E9;
+            background: #444444;
+            border-color: #888888;
+            color: #FFFFFF;
         }
         
         .radio-option input[type="radio"] {
@@ -159,13 +166,13 @@
         
         .lunar-select {
             flex: 1;
-            background: #F5F1E9;
-            border: 1px solid #D1CBBF;
+            background: #333333;
+            border: 1px solid #555555;
             border-radius: 4px;
             padding: 8px 12px;
             font-family: 'Noto Serif SC', serif;
             font-size: 16px;
-            color: #2E2E2E;
+            color: #FFFFFF;
         }
         
         .numbers-input {
@@ -180,25 +187,25 @@
         
         .number-input {
             flex: 1;
-            background: #F5F1E9;
-            border: 1px solid #D1CBBF;
+            background: #333333;
+            border: 1px solid #555555;
             border-radius: 4px;
             padding: 12px;
             font-family: 'Noto Serif SC', serif;
             font-size: 16px;
             text-align: center;
-            color: #2E2E2E;
+            color: #FFFFFF;
         }
         
         .number-input:focus {
             outline: none;
-            border-color: #A98B4F;
+            border-color: #888888;
         }
         
         .submit-btn {
-            background: #A42A28;
-            color: #F5F1E9;
-            border: none;
+            background: #444444;
+            color: #FFFFFF;
+            border: 1px solid #666666;
             border-radius: 4px;
             padding: 12px 48px;
             font-size: 18px;
@@ -206,22 +213,86 @@
             cursor: pointer;
             transition: all 250ms ease;
             font-family: 'Noto Serif SC', serif;
+            display: block;
+            margin: 32px auto 0;
         }
         
         .submit-btn:hover {
-            background: #C0322F;
+            background: #555555;
             transform: translateY(-2px);
         }
         
         .submit-btn:disabled {
-            background: #6D6D6D;
+            background: #2a2a2a;
+            color: #888888;
             cursor: not-allowed;
             transform: none;
         }
         
+        /* 测算结果样式 */
+        .result-summary {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .gods-display {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .god-box {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #444;
+            border: 2px solid #666;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: bold;
+            margin: 0 5px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .divination-info, .fortune-analysis, .god-detail {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #666;
+        }
+        
+        .fortune-quote {
+            color: #ddd;
+            font-style: italic;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #333;
+            border-radius: 6px;
+            border-left: 3px solid #888;
+        }
+        
+        .fortune-suggestion, .god-detail p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        
+        .god-detail {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 4px solid #555;
+        }
+        
+        .god-detail h5 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
         .result-section {
             display: none;
-            border-top: 1px solid #D1CBBF;
+            border-top: 1px solid #333333;
             padding-top: 32px;
             margin-top: 32px;
         }
@@ -231,25 +302,25 @@
         }
         
         .divination-summary {
-            background: #F5F1E9;
+            background: #222222;
             padding: 24px;
             border-radius: 4px;
             margin-bottom: 24px;
-            border-left: 4px solid #A98B4F;
+            border-left: 4px solid #666666;
         }
         
         .summary-title {
             font-size: 20px;
             font-weight: 500;
             margin-bottom: 12px;
-            color: #A98B4F;
+            color: #CCCCCC;
         }
         
         .summary-content {
             font-size: 24px;
             font-weight: 500;
             text-align: center;
-            color: #2E2E2E;
+            color: #FFFFFF;
         }
         
         .divine-god {
@@ -257,11 +328,11 @@
         }
         
         .god-jious {
-            color: #3E7765;
+            color: #4CAF50;
         }
         
         .god-xiong {
-            color: #8B4513;
+            color: #FF5722;
         }
         
         .god-details {
@@ -269,8 +340,8 @@
         }
         
         .god-card {
-            background: transparent;
-            border: 1px dashed #D1CBBF;
+            background: #222222;
+            border: 1px dashed #555555;
             border-radius: 4px;
             padding: 24px;
             margin-bottom: 16px;
@@ -285,14 +356,14 @@
         .god-quote {
             font-size: 16px;
             font-style: italic;
-            color: #6D6D6D;
+            color: #999999;
             margin-bottom: 12px;
         }
         
         .god-explanation {
             font-size: 16px;
             line-height: 1.7;
-            color: #2E2E2E;
+            color: #CCCCCC;
         }
         
         .advice-section {
@@ -386,7 +457,128 @@
             gap: 4px;
         }
         
-
+        /* 六神介绍样式 */
+        .gods-intro-section {
+            margin: 32px 0;
+            text-align: center;
+        }
+        
+        .intro-text {
+            color: #CCCCCC;
+            font-size: 14px;
+            margin: 16px 0 24px;
+        }
+        
+        /* 两排三列布局样式 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 16px;
+            width: 360px;
+            height: 240px;
+            margin: 0 auto 32px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            border: 1px solid #333333;
+            padding: 16px;
+        }
+        
+        .grid-god {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .grid-god:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(255,255,255,0.2);
+        }
+        
+        .grid-god.active {
+            animation: godPulse 0.5s ease-in-out;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        @keyframes godPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .god-0 { /* 留连 - 第一排第一个 */
+            grid-row: 1;
+            grid-column: 1;
+            border-color: #FF5722;
+            color: #FF5722;
+            background: rgba(255, 87, 34, 0.1);
+        }
+        
+        .god-1 { /* 速喜 - 第一排第二个 */
+            grid-row: 1;
+            grid-column: 2;
+            border-color: #4CAF50;
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .god-2 { /* 赤口 - 第一排第三个 */
+            grid-row: 1;
+            grid-column: 3;
+            border-color: #FF5722;
+            color: #FF5722;
+            background: rgba(255, 87, 34, 0.1);
+        }
+        
+        .god-3 { /* 大安 - 第二排第一个 */
+            grid-row: 2;
+            grid-column: 1;
+            border-color: #4CAF50;
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .god-4 { /* 空亡 - 第二排第二个 */
+            grid-row: 2;
+            grid-column: 2;
+            border-color: #FF5722;
+            color: #FF5722;
+            background: rgba(255, 87, 34, 0.1);
+        }
+        
+        .god-5 { /* 小吉 - 第二排第三个 */
+            grid-row: 2;
+            grid-column: 3;
+            border-color: #4CAF50;
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        /* 移动端两排三列响应式 */
+        @media (max-width: 768px) {
+            .grid-container {
+                width: 300px;
+                height: 200px;
+                gap: 12px;
+                padding: 12px;
+            }
+            
+            .grid-god {
+                font-size: 12px;
+                border-radius: 6px;
+            }
+        }
         
         @media (max-width: 768px) {
             body {
@@ -558,11 +750,9 @@
                     <label class="form-label">选择起卦方式：</label>
                     <div class="radio-group">
                         <div class="radio-option selected" data-value="numbers">
-                            <input type="radio" name="divination-type" value="numbers" checked>
                             随机三数
                         </div>
                         <div class="radio-option" data-value="lunar">
-                            <input type="radio" name="divination-type" value="lunar">
                             阴历时辰
                         </div>
                     </div>
@@ -570,9 +760,9 @@
                 
                 <div class="form-group">
                     <div class="numbers-input show" id="numbers-input">
-                        <input type="number" class="number-input" id="num1" placeholder="第一个数字" min="1" max="999">
-                        <input type="number" class="number-input" id="num2" placeholder="第二个数字" min="1" max="999">
-                        <input type="number" class="number-input" id="num3" placeholder="第三个数字" min="1" max="999">
+                        <input type="number" class="number-input" id="num1" placeholder="第一个数字" min="1" max="12">
+                        <input type="number" class="number-input" id="num2" placeholder="第二个数字" min="1" max="31">
+                        <input type="number" class="number-input" id="num3" placeholder="第三个数字" min="1" max="12">
                     </div>
                     
                     <div class="lunar-inputs" id="lunar-input">
@@ -588,11 +778,41 @@
                             <option value="8">八月</option>
                             <option value="9">九月</option>
                             <option value="10">十月</option>
-                            <option="11">冬月</option>
+                            <option value="11">冬月</option>
                             <option value="12">腊月</option>
                         </select>
                         <select class="lunar-select" id="lunar-day">
                             <option value="">选择日期</option>
+                            <option value="1">初一</option>
+                            <option value="2">初二</option>
+                            <option value="3">初三</option>
+                            <option value="4">初四</option>
+                            <option value="5">初五</option>
+                            <option value="6">初六</option>
+                            <option value="7">初七</option>
+                            <option value="8">初八</option>
+                            <option value="9">初九</option>
+                            <option value="10">初十</option>
+                            <option value="11">十一</option>
+                            <option value="12">十二</option>
+                            <option value="13">十三</option>
+                            <option value="14">十四</option>
+                            <option value="15">十五</option>
+                            <option value="16">十六</option>
+                            <option value="17">十七</option>
+                            <option value="18">十八</option>
+                            <option value="19">十九</option>
+                            <option value="20">二十</option>
+                            <option value="21">廿一</option>
+                            <option value="22">廿二</option>
+                            <option value="23">廿三</option>
+                            <option value="24">廿四</option>
+                            <option value="25">廿五</option>
+                            <option value="26">廿六</option>
+                            <option value="27">廿七</option>
+                            <option value="28">廿八</option>
+                            <option value="29">廿九</option>
+                            <option value="30">三十</option>
                         </select>
                         <select class="lunar-select" id="lunar-hour">
                             <option value="">选择时辰</option>
@@ -617,21 +837,40 @@
                 </div>
             </div>
             
-            <div class="result-section" id="result-section">
+            <!-- 六神说明区域 -->
+            <div class="gods-intro-section" id="gods-intro-section">
+                <h2 class="section-title">六神介绍</h2>
+                <p class="intro-text">点击下方任意神祇了解其含义和象征</p>
+                <div class="grid-container" id="grid-container">
+                    <!-- 第一排：留连、速喜、赤口 -->
+                    <div class="grid-god god-0" data-god="留连">留连</div>
+                    <div class="grid-god god-1" data-god="速喜">速喜</div>
+                    <div class="grid-god god-2" data-god="赤口">赤口</div>
+                    <!-- 第二排：大安、空亡、小吉 -->
+                    <div class="grid-god god-3" data-god="大安">大安</div>
+                    <div class="grid-god god-4" data-god="空亡">空亡</div>
+                    <div class="grid-god god-5" data-god="小吉">小吉</div>
+                </div>
+            </div>
+            
+            <!-- 测算结果 -->
+            <div class="result-section" id="result-section" style="display: none;">
                 <h2 class="section-title">推演结果</h2>
                 
-                <div class="divination-summary">
+                <!-- 最终结果展示 -->
+                <div class="result-display" id="result-display" style="display: none;">
                     <div class="summary-title">卦象总览</div>
-                    <div class="summary-content" id="summary-content">
-                        <!-- 结果将通过JavaScript动态生成 -->
+                    <div class="final-gods" id="final-gods">
+                        <!-- 最终结果将通过JavaScript动态生成 -->
                     </div>
+                    <div class="final-result" id="final-result"></div>
                 </div>
                 
-                <div class="god-details" id="god-details">
+                <div class="god-details" id="god-details" style="display: none;">
                     <!-- 六神详解将通过JavaScript动态生成 -->
                 </div>
                 
-                <div class="advice-section">
+                <div class="advice-section" id="advice-section" style="display: none;">
                     <div class="advice-title">生成AI指令</div>
                     <div class="advice-content" id="advice-content">
                         <!-- 建议将通过JavaScript动态生成 -->
@@ -647,10 +886,9 @@
                     </div>
                 </div>
                 
-
-                
                 <button class="reset-btn" id="reset-btn">重新测算</button>
             </div>
+
         </div>
     </div>
 
@@ -695,9 +933,10 @@
             }
         };
         
-        // 六神顺序
+        // 六神顺序（大安→留连→速喜→赤口→小吉→空亡）
         const godsOrder = ['大安', '留连', '速喜', '赤口', '小吉', '空亡'];
         
+        // 验证算法功能
         // DOM元素获取
         const questionInput = document.getElementById('question');
         const radioOptions = document.querySelectorAll('.radio-option');
@@ -706,12 +945,170 @@
         const lunarDaySelect = document.getElementById('lunar-day');
         const submitBtn = document.getElementById('submit-btn');
         const resultSection = document.getElementById('result-section');
-        const summaryContent = document.getElementById('summary-content');
         const godDetails = document.getElementById('god-details');
         const adviceContent = document.getElementById('advice-content');
         const resetBtn = document.getElementById('reset-btn');
         const copyBtn = document.getElementById('copy-btn');
         
+        // 六神点击事件处理
+        const gridGods = document.querySelectorAll('.grid-god');
+        gridGods.forEach(godElement => {
+            godElement.addEventListener('click', () => {
+                const godName = godElement.getAttribute('data-god');
+                showGodInfo(godName);
+            });
+        });
+        
+        // 显示用神信息
+        function showGodInfo(godName) {
+            const godData = godsData[godName];
+            if (!godData) return;
+            
+            // 创建模态窗口显示用神信息
+            const modal = document.createElement('div');
+            modal.className = 'god-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">${godName}</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="god-quote">"${godData.quote}"</div>
+                        <div class="god-explanation">${godData.explanation}</div>
+                        <div class="god-characteristics">
+                            <strong>特征：</strong>${godData.characteristics}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 添加模态窗口样式
+            const style = document.createElement('style');
+            style.textContent = `
+                .god-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease;
+                }
+                
+                .modal-content {
+                    background: #1a1a1a;
+                    border: 2px solid #444;
+                    border-radius: 12px;
+                    max-width: 500px;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    animation: slideIn 0.3s ease;
+                }
+                
+                .modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 20px;
+                    border-bottom: 1px solid #333;
+                }
+                
+                .modal-title {
+                    color: #fff;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+                
+                .modal-close {
+                    background: none;
+                    border: none;
+                    color: #999;
+                    font-size: 28px;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .modal-close:hover {
+                    color: #fff;
+                }
+                
+                .modal-body {
+                    padding: 20px;
+                    color: #ccc;
+                }
+                
+                .god-quote {
+                    font-style: italic;
+                    font-size: 16px;
+                    color: #ffeb3b;
+                    margin-bottom: 16px;
+                    padding: 12px;
+                    background: rgba(255, 235, 59, 0.1);
+                    border-radius: 8px;
+                    border-left: 4px solid #ffeb3b;
+                }
+                
+                .god-explanation {
+                    line-height: 1.6;
+                    margin-bottom: 16px;
+                }
+                
+                .god-characteristics {
+                    color: #999;
+                    font-size: 14px;
+                }
+                
+                .god-characteristics strong {
+                    color: #ccc;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @keyframes slideIn {
+                    from { 
+                        opacity: 0;
+                        transform: translateY(-50px) scale(0.9);
+                    }
+                    to { 
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+            `;
+            
+            document.head.appendChild(style);
+            document.body.appendChild(modal);
+            
+            // 关闭模态窗口事件
+            const closeBtn = modal.querySelector('.modal-close');
+            closeBtn.addEventListener('click', () => {
+                document.body.removeChild(modal);
+                document.head.removeChild(style);
+            });
+            
+            // 点击背景关闭
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                    document.head.removeChild(style);
+                }
+            });
+        }
+
         // 初始化日期选择
         function initDaySelect() {
             lunarDaySelect.innerHTML = '<option value="">选择日期</option>';
@@ -746,9 +1143,9 @@
             const type = document.querySelector('.radio-option.selected').dataset.value;
             
             if (type === 'numbers') {
-                const num1 = parseInt(document.getElementById('num1').value);
-                const num2 = parseInt(document.getElementById('num2').value);
-                const num3 = parseInt(document.getElementById('num3').value);
+                const num1 = parseInt(document.getElementById('num1').value) || Math.floor(Math.random() * 6) + 1;
+                const num2 = parseInt(document.getElementById('num2').value) || Math.floor(Math.random() * 6) + 1;
+                const num3 = parseInt(document.getElementById('num3').value) || Math.floor(Math.random() * 6) + 1;
                 
                 if (!num1 || !num2 || !num3) {
                     throw new Error('请输入三个完整的数字');
@@ -791,40 +1188,87 @@
             return [firstGod, secondGod, thirdGod];
         }
         
-        // 生成结果
-        function generateResult(gods, question) {
+        // 显示最终结果
+        function showFinalResults(gods, question, numbers) {
+            // 显示结果区域
+            document.getElementById('result-display').style.display = 'block';
+            resultSection.style.display = 'block';
+            resultSection.classList.add('show');
+            
             // 生成卦象总览
-            const summaryHTML = gods.map(god => {
+            const finalGodsHTML = gods.map(god => {
                 const isJious = godsData[god].isJious;
                 const className = isJious ? 'god-jious' : 'god-xiong';
-                return `<span class="divine-god ${className}">${god}</span>`;
-            }).join(' → ');
-            summaryContent.innerHTML = summaryHTML;
+                return `<span class="god-box ${className}">${god}</span>`;
+            }).join(' <span style="color: #666; margin: 0 10px;">→</span> ');
             
-            // 生成六神详解
-            const detailsHTML = gods.map(god => {
+
+            
+            document.getElementById('final-gods').innerHTML = `
+                <div class="result-summary">
+                    <h3 style="color: #fff; margin-bottom: 20px;">🎯 卦象总览</h3>
+                    <div class="gods-display" style="font-size: 20px; margin: 20px 0;">
+                        ${finalGodsHTML}
+                    </div>
+                    <div class="divination-info" style="background: #2a2a2a; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p><strong style="color: #ccc;">📅 测算时间：</strong><span style="color: #fff;">${new Date().toLocaleString('zh-CN')}</span></p>
+                        <p><strong style="color: #ccc;">🔢 起卦数字：</strong><span style="color: #fff;">${numbers.join(', ')}</span></p>
+                        <p><strong style="color: #ccc;">❓ 测算问题：</strong><span style="color: #fff;">${question}</span></p>
+                    </div>
+                </div>
+            `;
+            
+            // 显示神祇详情
+            setTimeout(() => {
+                showGodDetails(gods);
+                showAdviceSection(gods, question, numbers);
+            }, 500);
+        }
+        
+        // 显示神祇详情
+        function showGodDetails(gods) {
+            const godDetails = document.getElementById('god-details');
+            const detailsHTML = gods.map((god, index) => {
                 const data = godsData[god];
                 const className = data.isJious ? 'god-jious' : 'god-xiong';
                 
                 return `
                     <div class="god-card">
-                        <div class="god-name ${className}">${god}</div>
+                        <div class="god-name ${className}">第${index + 1}卦：${god}</div>
                         <div class="god-quote">"${data.quote}"</div>
                         <div class="god-explanation">${data.explanation}</div>
                     </div>
                 `;
             }).join('');
             godDetails.innerHTML = detailsHTML;
+            godDetails.style.display = 'block';
+        }
+        
+        // 显示建议部分
+        function showAdviceSection(gods, question, numbers) {
+            const adviceSection = document.getElementById('advice-section');
+            const adviceContent = document.getElementById('advice-content');
             
-            // 生成建议
-            const adviceHTML = generateAdvice(gods, question);
+            const adviceHTML = generateAdvice(gods, question, numbers);
             adviceContent.innerHTML = adviceHTML;
+            adviceSection.style.display = 'block';
         }
         
         // 生成建议
-        function generateAdvice(gods, question) {
-            // 生成AI指令格式的建议
-            const aiInstruction = `我用小六壬起课，所询问的问题是：${question}，得到的三个用神分别为：${gods.join('、')}，请帮我详细解释。`;
+        function generateAdvice(gods, question, numbers) {
+            // 获取输入方式信息
+            const type = document.querySelector('.radio-option.selected').dataset.value;
+            let methodInfo = '';
+            
+            if (type === 'numbers') {
+                methodInfo = `随机数：${numbers[0]}、${numbers[1]}、${numbers[2]}`;
+            } else {
+                const hourNames = ['', '子时', '丑时', '寅时', '卯时', '辰时', '巳时', '午时', '未时', '申时', '酉时', '戌时', '亥时'];
+                methodInfo = `日期：阴历${numbers[0]}月${numbers[1]}日${hourNames[numbers[2]]}`;
+            }
+            
+            // 生成新的AI指令格式
+            const aiInstruction = `我通过${methodInfo}用小六壬起课，所询问的问题是：${question}？得到的三个用神分别为：${gods.join('、')}，请帮我详细解释。`;
             
             return aiInstruction;
         }
@@ -883,58 +1327,52 @@
             }
         }
         
-        // 事件监听器
+        // 开始测算功能
+        function handleCalculate() {
+            const question = questionInput.value.trim();
+            
+            if (!question) {
+                alert('请输入您想测算的问题');
+                return;
+            }
+            
+            // 显示加载状态
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '🔮 推演中...';
+            
+            try {
+                // 获取三个数字（支持随机三数和阴历时辰两种方式）
+                const numbers = getThreeNumbers();
+                
+                // 计算卦象结果
+                const gods = calculateDivination(numbers);
+                
+                // 显示结果
+                showFinalResults(gods, question, numbers);
+                
+                // 滚动到结果区域
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('测算过程中出错:', error);
+                alert('测算过程中出现错误，请重试');
+            } finally {
+                // 恢复按钮状态
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '开始测算';
+                }, 2000);
+            }
+        }
+        
+        // 事件监听器设置
         radioOptions.forEach(option => {
             option.addEventListener('click', () => {
                 switchDivinationType(option.dataset.value);
             });
         });
         
-        submitBtn.addEventListener('click', () => {
-            const question = questionInput.value.trim();
-            
-            if (!question) {
-                handleError(new Error('请输入您想测算的问题'), 'submit');
-                return;
-            }
-            
-            try {
-                // 显示加载状态
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="loading"></span> 推演中...';
-                
-                setTimeout(() => {
-                    const numbers = getThreeNumbers();
-                    const gods = calculateDivination(numbers);
-                    generateResult(gods, question);
-                    
-                    resultSection.classList.add('show');
-                    resultSection.scrollIntoView({ behavior: 'smooth' });
-                    
-                    // 移动端触觉反馈
-                    if (navigator.vibrate) {
-                        // 根据吉凶给出不同的振动模式
-                        const jiousCount = gods.filter(god => godsData[god].isJious).length;
-                        if (jiousCount >= 2) {
-                            navigator.vibrate([100, 50, 100]); // 吉利 - 两次短振
-                        } else if (jiousCount === 1) {
-                            navigator.vibrate(200); // 中性 - 一次中振
-                        } else {
-                            navigator.vibrate([50, 100, 50, 100, 50]); // 凶险 - 三次短振
-                        }
-                    }
-                    
-                    // 恢复按钮状态
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = '开始测算';
-                }, 500); // 稍微延迟增加仪式感
-                
-            } catch (error) {
-                handleError(error, 'calculate');
-                submitBtn.disabled = false;
-                submitBtn.textContent = '开始测算';
-            }
-        });
+        submitBtn.addEventListener('click', handleCalculate);
         
         resetBtn.addEventListener('click', () => {
             questionInput.value = '';
@@ -944,17 +1382,23 @@
             document.getElementById('lunar-month').value = '';
             document.getElementById('lunar-day').value = '';
             document.getElementById('lunar-hour').value = '';
-            resultSection.classList.remove('show');
-            questionInput.focus();
             
-            // 移动端触觉反馈
-            if (navigator.vibrate) {
-                navigator.vibrate(100);
-            }
+            // 隐藏所有结果区域
+            resultSection.classList.remove('show');
+            document.getElementById('result-display').style.display = 'none';
+            document.getElementById('god-details').style.display = 'none';
+            document.getElementById('advice-section').style.display = 'none';
+            
+            // 清空内容
+            document.getElementById('final-gods').innerHTML = '';
+            document.getElementById('final-result').innerHTML = '';
+            
+            questionInput.focus();
         });
         
         // 复制按钮事件监听器
         copyBtn.addEventListener('click', async () => {
+            const adviceContent = document.getElementById('advice-content');
             const copyText = adviceContent.textContent.trim();
             
             if (!copyText) {
@@ -971,11 +1415,6 @@
                 const success = await copyToClipboard(copyText);
                 if (success) {
                     showCopyFeedback();
-                    
-                    // 移动端触觉反馈
-                    if (navigator.vibrate) {
-                        navigator.vibrate([100, 50, 100]); // 成功反馈
-                    }
                 } else {
                     throw new Error('复制操作失败');
                 }
@@ -989,76 +1428,10 @@
                 copyBtn.querySelector('.copy-text').textContent = originalText;
             }
         });
-
         
         // 初始化
         initDaySelect();
         
-
-        
-        // Service Worker 注册
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then((registration) => {
-                        console.log('Service Worker 注册成功:', registration);
-                    })
-                    .catch((registrationError) => {
-                        console.log('Service Worker 注册失败:', registrationError);
-                    });
-            });
-        }
-        
-        // PWA 安装提示
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            showInstallButton();
-        });
-        
-        function showInstallButton() {
-            const installButton = document.createElement('button');
-            installButton.textContent = '📱 安装到桌面';
-            installButton.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #A42A28;
-                color: #F5F1E9;
-                border: none;
-                border-radius: 25px;
-                padding: 12px 24px;
-                font-size: 14px;
-                font-weight: 500;
-                box-shadow: 0 4px 12px rgba(164, 42, 40, 0.3);
-                cursor: pointer;
-                z-index: 1000;
-                transition: all 250ms ease;
-                font-family: 'Noto Serif SC', serif;
-            `;
-            
-            installButton.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    deferredPrompt = null;
-                    installButton.remove();
-                }
-            });
-            
-            document.body.appendChild(installButton);
-            
-            // 3秒后自动隐藏
-            setTimeout(() => {
-                if (installButton.parentNode) {
-                    installButton.style.opacity = '0';
-                    installButton.style.transform = 'translateX(-50%) translateY(10px)';
-                    setTimeout(() => installButton.remove(), 300);
-                }
-            }, 8000);
-        }
     </script>
 </body>
 </html>

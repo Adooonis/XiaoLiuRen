@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>最终验证检查 - 小六壬神课</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #000; 
+            color: #fff; 
+            padding: 20px;
+        }
+        .check-item { 
+            margin: 10px 0; 
+            padding: 10px; 
+            background: #333; 
+            border-radius: 5px;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        #results { 
+            position: fixed; 
+            top: 10px; 
+            right: 10px; 
+            background: rgba(0, 255, 0, 0.1); 
+            padding: 10px; 
+            border-radius: 5px; 
+            max-width: 400px; 
+            max-height: 400px; 
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>小六壬神课 - 最终验证检查</h1>
+    
+    <div id="results">
+        <h3>验证结果：</h3>
+        <div id="result-content"></div>
+    </div>
+
+    <!-- 这里可以嵌入实际页面的内容进行测试 -->
+    <iframe src="index.html" id="test-frame" style="width: 100%; height: 600px; margin-top: 20px;"></iframe>
+
+    <script>
+        function log(message, type = 'info') {
+            const resultContent = document.getElementById('result-content');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : '';
+            resultContent.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function checkInFrame() {
+            try {
+                const iframe = document.getElementById('test-frame');
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                log('开始检查iframe中的内容...');
+                
+                // 1. 检查六神排列顺序
+                log('\\n=== 1. 检查六神排列顺序 ===');
+                const gridContainer = iframeDoc.getElementById('grid-container');
+                if (!gridContainer) {
+                    log('❌ 未找到grid-container', 'error');
+                    return;
+                }
+                
+                const gods = gridContainer.querySelectorAll('.grid-god');
+                const actualOrder = Array.from(gods).map(god => god.getAttribute('data-god'));
+                const expectedOrder = ['留连', '速喜', '赤口', '大安', '小吉', '空亡'];
+                
+                log('期望顺序: ' + expectedOrder.join(' → '));
+                log('实际顺序: ' + actualOrder.join(' → '));
+                
+                let godsCorrect = true;
+                for (let i = 0; i < expectedOrder.length; i++) {
+                    if (expectedOrder[i] !== actualOrder[i]) {
+                        log(`❌ 位置 ${i + 1}错误: 期望"${expectedOrder[i]}", 实际"${actualOrder[i]}"`, 'error');
+                        godsCorrect = false;
+                    } else {
+                        log(`✅ 位置 ${i + 1}: "${actualOrder[i]}"`, 'success');
+                    }
+                }
+                
+                // 2. 检查按钮居中
+                log('\\n=== 2. 检查按钮居中 ===');
+                const submitBtn = iframeDoc.getElementById('submit-btn');
+                if (!submitBtn) {
+                    log('❌ 未找到submit-btn', 'error');
+                    return;
+                }
+                
+                const styles = submitBtn.getElement ? null : window.getComputedStyle(submitBtn);
+                const display = styles.display;
+                const margin = styles.margin;
+                
+                log(`按钮display: ${display}`);
+                log(`按钮margin: ${margin}`);
+                
+                const isCentered = display === 'block' && margin.includes('auto');
+                if (isCentered) {
+                    log('✅ 按钮居中设置正确', 'success');
+                } else {
+                    log('❌ 按钮未居中', 'error');
+                }
+                
+                // 3. 检查按钮事件处理
+                log('\\n=== 3. 检查按钮事件处理 ===');
+                const hasOnclick = submitBtn.hasAttribute('onclick');
+                log(`有onclick属性: ${hasOnclick ? '✅' : '❌'}`);
+                
+                if (hasOnclick) {
+                    log(`onclick值: ${submitBtn.getAttribute('onclick')}`);
+                }
+                
+                const iframeWindow = iframe.contentWindow;
+                const hasHandleCalculate = typeof iframeWindow.handleCalculate === 'function';
+                log(`有handleCalculate函数: ${hasHandleCalculate ? '✅' : '❌'}`);
+                
+                // 4. 检查元素顺序
+                log('\\n=== 4. 检查元素顺序 ===');
+                const content = iframeDoc.querySelector('.content');
+                const godsIntroSection = iframeDoc.querySelector('.gods-intro-section');
+                const resultSection = iframeDoc.querySelector('.result-section');
+                
+                if (!content || !godsIntroSection || !resultSection) {
+                    log('❌ 未找到必要的元素', 'error');
+                    return;
+                }
+                
+                const children = Array.from(content.children);
+                const godsIndex = children.findIndex(el => el === godsIntroSection);
+                const resultIndex = children.findIndex(el => el === resultSection);
+                
+                log(`六神介绍区域位置: ${godsIndex}`);
+                log(`结果区域位置: ${resultIndex}`);
+                
+                const correctOrder = resultIndex > godsIndex;
+                if (correctOrder) {
+                    log('✅ 结果区域在六神介绍后面', 'success');
+                } else {
+                    log('❌ 元素顺序不正确', 'error');
+                }
+                
+                // 5. 生成最终报告
+                log('\\n=== 最终测试报告 ===');
+                const allCorrect = godsCorrect && isCentered && hasOnclick && hasHandleCalculate && correctOrder;
+                
+                if (allCorrect) {
+                    log('🎉 所有测试通过！修复完全成功！', 'success');
+                } else {
+                    log('⚠️ 部分测试失败，请检查上述详细信息', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ 检查过程出错: ' + error.message, 'error');
+            }
+        }
+        
+        // 等待iframe加载完成后运行检查
+        window.addEventListener('load', function() {
+            setTimeout(checkInFrame, 2000);
+        });
+    </script>
+</body>
+</html>

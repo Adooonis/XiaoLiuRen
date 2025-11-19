@@ -1,29 +1,13 @@
-<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg">
-  <!-- 背景圆形 -->
-  <circle cx="96" cy="96" r="88" fill="#A42A28" stroke="#8B241F" stroke-width="4"/>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .text { fill: white; font-family: Arial, sans-serif; font-size: 40px; font-weight: bold; }
+    </style>
+  </defs>
   
-  <!-- 内圈 -->
-  <circle cx="96" cy="96" r="70" fill="#F5F1E9" stroke="#A98B4F" stroke-width="2"/>
+  <!-- 黑色背景，圆角 -->
+  <rect width="192" height="192" fill="#000000" rx="20"/>
   
-  <!-- 六角形 -->
-  <polygon points="96,70 115.5,82 115.5,110 96,122 76.5,110 76.5,82" fill="#3E7765" stroke="#2E5B4A" stroke-width="2"/>
-  
-  <!-- 中心圆点 -->
-  <circle cx="96" cy="96" r="8" fill="#A42A28"/>
-  
-  <!-- 六角形内装饰 -->
-  <circle cx="96" cy="70" r="3" fill="#F5F1E9"/>
-  <circle cx="115.5" cy="82" r="3" fill="#F5F1E9"/>
-  <circle cx="115.5" cy="110" r="3" fill="#F5F1E9"/>
-  <circle cx="96" cy="122" r="3" fill="#F5F1E9"/>
-  <circle cx="76.5" cy="110" r="3" fill="#F5F1E9"/>
-  <circle cx="76.5" cy="82" r="3" fill="#F5F1E9"/>
-  
-  <!-- 外围装饰点 -->
-  <circle cx="96" cy="50" r="3" fill="#A98B4F"/>
-  <circle cx="130" cy="70" r="3" fill="#A98B4F"/>
-  <circle cx="130" cy="122" r="3" fill="#A98B4F"/>
-  <circle cx="96" cy="142" r="3" fill="#A98B4F"/>
-  <circle cx="62" cy="122" r="3" fill="#A98B4F"/>
-  <circle cx="62" cy="70" r="3" fill="#A98B4F"/>
+  <!-- 白色文字：六壬 -->
+  <text x="96" y="96" class="text" text-anchor="middle" dominant-baseline="middle">六壬</text>
 </svg>

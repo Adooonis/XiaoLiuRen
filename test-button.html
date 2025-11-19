@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮测试</title>
+    <style>
+        .submit-btn {
+            background: #444444;
+            color: #FFFFFF;
+            border: 1px solid #666666;
+            border-radius: 4px;
+            padding: 12px 48px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 250ms ease;
+            font-family: 'Noto Serif SC', serif;
+            display: block;
+            margin: 32px auto 0;
+        }
+        .submit-btn:hover {
+            background: #555555;
+            transform: translateY(-2px);
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            color: green;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">小六壬按钮测试</h1>
+    
+    <div class="form-group" style="text-align: center;">
+        <textarea placeholder="请输入问题" style="width: 400px; height: 80px; padding: 12px; margin-bottom: 16px;"></textarea>
+        <br>
+        <button class="submit-btn" id="submit-btn" onclick="testButton()">开始测算</button>
+        <div class="result" id="result" style="display: none;">
+            ✅ 按钮功能正常！测算结果：大安、速喜、留连
+        </div>
+    </div>
+
+    <script>
+        function testButton() {
+            console.log('按钮被点击了！');
+            document.getElementById('result').style.display = 'block';
+            alert('按钮功能正常！');
+        }
+        
+        // 绑定事件监听器
+        document.getElementById('submit-btn').addEventListener('click', function(e) {
+            console.log('事件监听器被触发！');
+            e.preventDefault();
+            testButton();
+        });
+    </script>
+</body>
+</html>

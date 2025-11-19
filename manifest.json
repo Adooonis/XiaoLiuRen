@@ -4,8 +4,8 @@
   "description": "传统小六壬起卦工具，古法神机妙算，趋吉避凶",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#F5F1E9",
-  "theme_color": "#A42A28",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "orientation": "portrait-primary",
   "scope": ".",
   "icons": [
