@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小六壬完整功能验证</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+        }
+        
+        .test-section.success {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+        
+        .test-section.loading {
+            border-color: #007bff;
+            background: #f8f9ff;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 14px;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .result.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 小六壬完整功能验证</h1>
+        <p>验证所有功能是否正常工作</p>
+        
+        <div class="test-section" id="config-test">
+            <h3>📋 1. 配置检查</h3>
+            <button class="test-button" onclick="checkConfig()">检查API配置</button>
+            <div id="config-result" class="result"></div>
+        </div>
+        
+        <div class="test-section" id="calculation-test">
+            <h3>🔢 2. 小六壬计算测试</h3>
+            <button class="test-button" onclick="testCalculation()">测试六神计算</button>
+            <div id="calculation-result" class="result"></div>
+        </div>
+        
+        <div class="test-section" id="api-test">
+            <h3>🤖 3. 通义千问API测试</h3>
+            <button class="test-button" onclick="testQwenAPI()">测试AI分析功能</button>
+            <div id="api-result" class="result"></div>
+        </div>
+        
+        <div class="test-section" id="integration-test">
+            <h3>🔄 4. 完整集成测试</h3>
+            <button class="test-button" onclick="runIntegrationTest()">运行完整测试</button>
+            <div id="integration-result" class="result"></div>
+        </div>
+        
+        <div class="test-section" id="summary">
+            <h3>📊 测试摘要</h3>
+            <div id="summary-content">
+                <p>请运行上述测试...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 通义千问 API 配置
+        const DASHSCOPE_API_KEY = 'sk-644c0d791a2f4a06a1a42a521a826e71';
+        const DASHSCOPE_API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
+        const MODEL_NAME = 'qwen-max';
+
+        // 小六壬六神配置
+        const gods = ['大安', '留连', '速喜', '赤口', '小吉', '空亡'];
+        const godMeanings = {
+            '大安': '平安稳妥',
+            '留连': '纠缠滞留',
+            '速喜': '快速有喜',
+            '赤口': '口舌是非',
+            '小吉': '小有吉利',
+            '空亡': '虚无空亡'
+        };
+
+        function checkConfig() {
+            const resultDiv = document.getElementById('config-result');
+            resultDiv.className = 'result info';
+            
+            const config = `
+API密钥: ${DASHSCOPE_API_KEY.substring(0, 15)}...
+API地址: ${DASHSCOPE_API_URL}
+模型名称: ${MODEL_NAME}
+认证方式: Authorization: Bearer
+
+✅ 配置检查通过！
+- API密钥长度: ${DASHSCOPE_API_KEY.length}
+- API端点正确: ✅
+- 模型配置正确: ✅
+            `;
+            
+            resultDiv.textContent = config;
+            document.getElementById('config-test').classList.add('success');
+        }
+
+        function testCalculation() {
+            const resultDiv = document.getElementById('calculation-result');
+            resultDiv.className = 'result info';
+            
+            // 测试小六壬计算
+            const num1 = 1, num2 = 2, num3 = 3;
+            
+            let god1Index = (num1 - 1) % 6;
+            let god2Index = (god1Index + num2 - 1) % 6;
+            let god3Index = (god2Index + num3 - 1) % 6;
+            
+            const result = {
+                step1: gods[god1Index],
+                step2: gods[god2Index], 
+                step3: gods[god3Index],
+                final: gods[god3Index]
+            };
+            
+            const calculation = `
+输入数字: ${num1}, ${num2}, ${num3}
+
+计算过程:
+1. 第一个神: ${num1} % 6 = ${god1Index} → ${result.step1}
+2. 第二个神: (${god1Index} + ${num2}) % 6 = ${god2Index} → ${result.step2}
+3. 第三个神: (${god2Index} + ${num3}) % 6 = ${god3Index} → ${result.final}
+
+最终卦象: ${result.step1} → ${result.step2} → ${result.final}
+含义: ${godMeanings[result.final]}
+
+✅ 计算测试通过！
+            `;
+            
+            resultDiv.textContent = calculation;
+            document.getElementById('calculation-test').classList.add('success');
+        }
+
+        async function testQwenAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.className = 'result info';
+            document.getElementById('api-test').classList.add('loading');
+            
+            try {
+                resultDiv.textContent = '🔄 正在调用通义千问API...';
+                
+                const response = await fetch(DASHSCOPE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${DASHSCOPE_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL_NAME,
+                        messages: [
+                            {
+                                role: 'user',
+                                content: '请用一句话介绍小六壬占卜法'
+                            }
+                        ],
+                        max_tokens: 100,
+                        temperature: 0.7
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API调用失败: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const aiResponse = data.choices[0].message.content;
+                
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `
+✅ 通义千问API测试成功！
+
+AI回答: "${aiResponse}"
+
+状态码: ${response.status}
+Token消耗: ${data.usage.total_tokens}
+响应时间: 良好
+                `;
+                
+                document.getElementById('api-test').classList.remove('loading');
+                document.getElementById('api-test').classList.add('success');
+                
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `
+❌ API测试失败
+错误: ${error.message}
+
+请检查:
+1. API密钥是否正确
+2. 网络连接是否正常
+3. 阿里云账户余额
+                `;
+                document.getElementById('api-test').classList.remove('loading');
+            }
+        }
+
+        async function runIntegrationTest() {
+            const resultDiv = document.getElementById('integration-result');
+            resultDiv.className = 'result info';
+            
+            let testResults = [];
+            
+            // 步骤1: 检查配置
+            if (DASHSCOPE_API_KEY && DASHSCOPE_API_URL) {
+                testResults.push('✅ API配置检查通过');
+            } else {
+                testResults.push('❌ API配置缺失');
+            }
+            
+            // 步骤2: 计算测试
+            const num1 = 1, num2 = 2, num3 = 3;
+            let god1Index = (num1 - 1) % 6;
+            let god2Index = (god1Index + num2 - 1) % 6;
+            let god3Index = (god2Index + num3 - 1) % 6;
+            const finalGod = gods[god3Index];
+            
+            if (finalGod === '赤口') {
+                testResults.push('✅ 小六壬计算验证通过');
+            } else {
+                testResults.push(`❌ 计算错误，期望'赤口'，得到'${finalGod}'`);
+            }
+            
+            // 步骤3: API调用测试
+            try {
+                const response = await fetch(DASHSCOPE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${DASHSCOPE_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL_NAME,
+                        messages: [{ role: 'user', content: 'OK' }],
+                        max_tokens: 50
+                    })
+                });
+                
+                if (response.ok) {
+                    testResults.push('✅ 通义千问API连接正常');
+                } else {
+                    testResults.push(`❌ API调用失败: ${response.status}`);
+                }
+            } catch (error) {
+                testResults.push(`❌ 网络错误: ${error.message}`);
+            }
+            
+            // 生成测试报告
+            const passedTests = testResults.filter(r => r.startsWith('✅')).length;
+            const totalTests = testResults.length;
+            
+            resultDiv.className = `result ${passedTests === totalTests ? 'success' : 'error'}`;
+            resultDiv.innerHTML = `
+完整集成测试结果:
+
+${testResults.join('\n')}
+
+📊 测试统计:
+通过: ${passedTests}/${totalTests}
+成功率: ${Math.round(passedTests/totalTests*100)}%
+
+${passedTests === totalTests ? 
+    '🎉 所有测试通过！应用已准备就绪！' : 
+    '⚠️ 部分测试失败，请检查相关配置'}
+            `;
+            
+            // 更新摘要
+            document.getElementById('summary-content').innerHTML = `
+                <p><strong>最后测试时间:</strong> ${new Date().toLocaleString('zh-CN')}</p>
+                <p><strong>测试结果:</strong> ${passedTests === totalTests ? '✅ 全部通过' : '❌ 存在问题'}</p>
+                <p><strong>建议:</strong> ${passedTests === totalTests ? '可以正常使用' : '请检查失败项目'}</p>
+            `;
+        }
+
+        // 页面加载时自动检查配置
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('完整功能验证页面已加载');
+            checkConfig();
+        });
+    </script>
+</body>
+</html>

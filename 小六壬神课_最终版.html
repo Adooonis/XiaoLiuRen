@@ -1307,7 +1307,7 @@
                 methodInfo = `日期：阴历${numbers[0]}月${numbers[1]}日${hourNames[numbers[2]]}`;
             }
             
-            // 生成专业AI指令格式（与通义千问分析使用相同格式）
+            // 生成完整的AI专业分析指令格式
             const aiInstruction = `你是一个专业的小六壬卦象分析师。用户通过小六壬起卦，得到的卦象是：${gods.join(' → ')}。
 
 测算问题：${question}
@@ -1487,11 +1487,11 @@
         // 初始化
         initDaySelect();
         
-        // 阿里云通义千问API 分析功能
+        // 通义千问API 分析功能
         const DASHSCOPE_API_KEY = localStorage.getItem('DASHSCOPE_API_KEY') || 'sk-644c0d791a2f4a06a1a42a521a826e71';
         const DASHSCOPE_API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
         
-        // 调用阿里云通义千问API分析卦象
+        // 调用通义千问API分析卦象
         async function analyzeWithQwen(gods, question, numbers) {
             const aiAnalysisSection = document.getElementById('ai-analysis-section');
             const aiContent = document.getElementById('ai-content');
@@ -1549,7 +1549,7 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`阿里云通义千问API调用失败: ${response.status}`);
+                    throw new Error(`通义千问API调用失败: ${response.status}`);
                 }
                 
                 const data = await response.json();
@@ -1588,9 +1588,9 @@
                         <div style="margin-top: 20px; padding: 15px; background: #333; border-radius: 6px; text-align: left;">
                             <div style="color: #ccc; font-size: 14px;">
                                 <strong>手动配置方法：</strong><br>
-                                1. 请在代码中设置您的DASHSCOPE API密钥<br>
+                                1. 请在代码中设置您的通义千问API密钥<br>
                                 2. 检查网络连接状态<br>
-                                3. 确认阿里云通义千问API服务正常
+                                3. 确认通义千问API服务正常
                             </div>
                         </div>
                     </div>
