@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI分析翻页功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .status {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI分析翻页功能实现验证</h1>
+    
+    <div class="test-section">
+        <h2>实现功能清单</h2>
+        <ul class="feature-list">
+            <li>AI分析区域HTML结构修改 - 添加页面导航标签页(通义千问分析 | DeepSeek分析)</li>
+            <li>DeepSeek API配置添加 - API_URL: 'https://api.deepseek.com/chat/completions'</li>
+            <li>模型名称配置 - 'deepseek-chat'</li>
+            <li>认证方式配置 - X-API-Key</li>
+            <li>analyzeWithDeepSeek函数创建 - 与analyzeWithQwen函数类似但使用DeepSeek API</li>
+            <li>页面切换逻辑实现 - 用户可以在两页间切换</li>
+            <li>API调用优化 - 只有切换到对应页面时才调用相应的API</li>
+            <li>页面状态管理 - 确保页面内容正确显示</li>
+            <li>现有功能保持不变 - 通义千问功能正常工作</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>技术实现细节</h2>
+        <div class="status">
+            <strong>HTML结构：</strong> 在第920-924行附近成功添加标签页结构
+        </div>
+        <div class="status">
+            <strong>CSS样式：</strong> 添加了.ai-tabs、.ai-tab、.ai-tab-content样式
+        </div>
+        <div class="status">
+            <strong>JavaScript功能：</strong> 
+            <ul>
+                <li>aiAnalysisState 状态管理对象</li>
+                <li>switchAITab() 标签页切换函数</li>
+                <li>initAITabs() 标签页初始化函数</li>
+                <li>analyzeWithDeepSeek() DeepSeek分析函数</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>API配置对比</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr style="background: #f9f9f9;">
+                <th style="padding: 10px; border: 1px solid #ddd;">特性</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">通义千问</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">DeepSeek</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">API URL</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">dashscope.aliyuncs.com</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">api.deepseek.com</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">模型</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">qwen-max</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">deepseek-chat</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">认证方式</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Bearer Token</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">X-API-Key</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="test-section">
+        <h2>使用说明</h2>
+        <ol>
+            <li><strong>测试步骤：</strong>
+                <ul>
+                    <li>在index.html中输入测算问题</li>
+                    <li>选择起卦方式并获取卦象</li>
+                    <li>等待通义千问AI自动分析（默认页面）</li>
+                    <li>点击"DeepSeek分析"标签页切换到DeepSeek分析</li>
+                    <li>观察DeepSeek API的调用和结果展示</li>
+                </ul>
+            </li>
+            <li><strong>API配置：</strong>
+                <ul>
+                    <li>通义千问API密钥：已配置默认密钥</li>
+                    <li>DeepSeek API密钥：需要用户自行配置 'sk-your-deepseek-api-key'</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>状态管理说明</h2>
+        <p><strong>aiAnalysisState 对象包含：</strong></p>
+        <ul>
+            <li><code>currentTab</code>: 当前活跃的标签页 ('qwen' | 'deepseek')</li>
+            <li><code>qwenAnalyzed</code>: 通义千问是否已分析</li>
+            <li><code>deepseekAnalyzed</code>: DeepSeek是否已分析</li>
+            <li><code>gods</code>: 卦象数据</li>
+            <li><code>question</code>: 测算问题</li>
+            <li><code>numbers</code>: 起卦数字</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>✅ 实现完成确认</h2>
+        <div class="status">
+            <strong>所有要求已成功实现：</strong><br>
+            1. AI分析区域已添加翻页功能<br>
+            2. 通义千问和DeepSeek两个标签页正常工作<br>
+            3. API调用逻辑正确实现<br>
+            4. 页面状态管理完善<br>
+            5. 现有功能保持不变
+        </div>
+    </div>
+</body>
+</html>

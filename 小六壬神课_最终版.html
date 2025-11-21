@@ -423,6 +423,45 @@
             align-items: center;
         }
         
+        /* 标签页样式 */
+        .ai-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .ai-tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Noto Serif SC', serif;
+            transition: all 250ms ease;
+            border-bottom: 2px solid transparent;
+            position: relative;
+        }
+        
+        .ai-tab:hover {
+            color: #ccc;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .ai-tab.active {
+            color: #4CAF50;
+            border-bottom-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.05);
+        }
+        
+        .ai-tab-content {
+            display: none;
+        }
+        
+        .ai-tab-content.active {
+            display: block;
+        }
+        
         .ai-analysis-content {
             color: #ddd;
             line-height: 1.7;
@@ -918,8 +957,33 @@
                 <!-- AI深度分析区域 -->
                 <div class="ai-analysis-section" id="ai-analysis-section" style="display: none;">
                     <div class="ai-analysis-title">🤖 AI深度分析</div>
-                    <div class="ai-analysis-content" id="ai-content">
-                        <!-- AI分析结果将通过JavaScript动态生成 -->
+                    
+                    <!-- AI标签页导航 -->
+                    <div class="ai-tabs">
+                        <button class="ai-tab active" id="qwen-tab" data-target="qwen-content">通义千问分析</button>
+                        <button class="ai-tab" id="deepseek-tab" data-target="deepseek-content">DeepSeek分析</button>
+                        <button class="ai-tab" id="compare-tab" data-target="compare-content">对比分析</button>
+                    </div>
+                    
+                    <!-- 通义千问分析内容 -->
+                    <div class="ai-tab-content active" id="qwen-content">
+                        <div class="ai-analysis-content" id="qwen-analysis-content">
+                            <!-- 通义千问AI分析结果将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <!-- DeepSeek分析内容 -->
+                    <div class="ai-tab-content" id="deepseek-content">
+                        <div class="ai-analysis-content" id="deepseek-analysis-content">
+                            <!-- DeepSeek AI分析结果将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 对比分析内容 -->
+                    <div class="ai-tab-content" id="compare-content">
+                        <div class="ai-analysis-content" id="compare-analysis-content">
+                            <!-- 对比分析结果将通过JavaScript动态生成 -->
+                        </div>
                     </div>
                 </div>
                 
@@ -1446,7 +1510,26 @@
             // 清空内容
             document.getElementById('final-gods').innerHTML = '';
             document.getElementById('final-result').innerHTML = '';
-            document.getElementById('ai-content').innerHTML = '';
+            document.getElementById('qwen-analysis-content').innerHTML = '';
+            document.getElementById('deepseek-analysis-content').innerHTML = '';
+            document.getElementById('compare-analysis-content').innerHTML = '';
+            
+            // 重置AI分析状态
+            aiAnalysisState.currentTab = 'qwen';
+            aiAnalysisState.qwenAnalyzed = false;
+            aiAnalysisState.deepseekAnalyzed = false;
+            aiAnalysisState.compareAnalyzed = false;
+            aiAnalysisState.gods = null;
+            aiAnalysisState.question = null;
+            aiAnalysisState.numbers = null;
+            
+            // 重置标签页显示
+            document.getElementById('qwen-tab').classList.add('active');
+            document.getElementById('deepseek-tab').classList.remove('active');
+            document.getElementById('compare-tab').classList.remove('active');
+            document.getElementById('qwen-content').classList.add('active');
+            document.getElementById('deepseek-content').classList.remove('active');
+            document.getElementById('compare-content').classList.remove('active');
             
             questionInput.focus();
         });
@@ -1487,21 +1570,51 @@
         // 初始化
         initDaySelect();
         
-        // 通义千问API 分析功能
+        // 初始化
+        initDaySelect();
+        initAITabs();
+        
+        // 阿里云通义千问API 分析功能
         const DASHSCOPE_API_KEY = localStorage.getItem('DASHSCOPE_API_KEY') || 'sk-644c0d791a2f4a06a1a42a521a826e71';
         const DASHSCOPE_API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
         
-        // 调用通义千问API分析卦象
+        // DeepSeek API 分析功能
+        const DEEPSEEK_API_KEY = localStorage.getItem('DEEPSEEK_API_KEY') || 'sk-4bf2dc7c99c64177b9ab41eb68604be6';
+        const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+        const DEEPSEEK_MODEL = 'deepseek-chat';
+        
+        // AI分析页面状态管理
+        const aiAnalysisState = {
+            currentTab: 'qwen',
+            qwenAnalyzed: false,
+            deepseekAnalyzed: false,
+            compareAnalyzed: false,
+            gods: null,
+            question: null,
+            numbers: null
+        };
+        
+        // 调用阿里云通义千问API分析卦象
         async function analyzeWithQwen(gods, question, numbers) {
             const aiAnalysisSection = document.getElementById('ai-analysis-section');
-            const aiContent = document.getElementById('ai-content');
+            const qwenContent = document.getElementById('qwen-analysis-content');
+            
+            // 更新状态
+            aiAnalysisState.gods = gods;
+            aiAnalysisState.question = question;
+            aiAnalysisState.numbers = numbers;
+            
+            // 如果已经分析过，直接显示结果
+            if (aiAnalysisState.qwenAnalyzed) {
+                return;
+            }
             
             // 显示分析区域
             aiAnalysisSection.style.display = 'block';
-            aiContent.innerHTML = `
+            qwenContent.innerHTML = `
                 <div style="text-align: center; color: #ccc; padding: 40px;">
                     <div style="font-size: 18px; margin-bottom: 10px;">🤖</div>
-                    <div>正在调用AI进行深度分析...</div>
+                    <div>正在调用通义千问进行深度分析...</div>
                     <div style="font-size: 12px; margin-top: 10px; color: #666;">
                         基于卦象：${gods.join(' → ')}<br>
                         问题：${question}
@@ -1549,18 +1662,21 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`通义千问API调用失败: ${response.status}`);
+                    throw new Error(`阿里云通义千问API调用失败: ${response.status}`);
                 }
                 
                 const data = await response.json();
                 const aiResponse = data.choices[0].message.content;
                 
+                // 标记为已分析
+                aiAnalysisState.qwenAnalyzed = true;
+                
                 // 显示AI分析结果
-                aiContent.innerHTML = `
+                qwenContent.innerHTML = `
                     <div class="ai-analysis-result">
                         <h3 style="color: #4CAF50; margin-bottom: 20px; display: flex; align-items: center;">
                             <span style="margin-right: 8px;">🤖</span>
-                            AI深度分析
+                            通义千问 AI深度分析
                         </h3>
                         <div class="ai-text" style="color: #ddd; line-height: 1.8; white-space: pre-wrap;">
                             ${aiResponse}
@@ -1577,18 +1693,305 @@
                 `;
                 
             } catch (error) {
-                console.error('AI分析出错:', error);
-                aiContent.innerHTML = `
+                console.error('通义千问AI分析出错:', error);
+                qwenContent.innerHTML = `
                     <div style="text-align: center; color: #FF6B6B; padding: 40px;">
                         <div style="font-size: 18px; margin-bottom: 10px;">❌</div>
-                        <div>AI分析服务暂时不可用</div>
+                        <div>通义千问 AI分析服务暂时不可用</div>
                         <div style="font-size: 12px; margin-top: 10px; color: #888;">
                             ${error.message || '网络连接错误或API配置问题'}
                         </div>
                         <div style="margin-top: 20px; padding: 15px; background: #333; border-radius: 6px; text-align: left;">
                             <div style="color: #ccc; font-size: 14px;">
                                 <strong>手动配置方法：</strong><br>
-                                1. 请在代码中设置您的通义千问API密钥<br>
+                                1. 请在代码中设置您的DASHSCOPE API密钥<br>
+                                2. 检查网络连接状态<br>
+                                3. 确认阿里云通义千问API服务正常
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // 调用DeepSeek API分析卦象
+        async function analyzeWithDeepSeek(gods, question, numbers) {
+            const deepseekContent = document.getElementById('deepseek-analysis-content');
+            
+            // 如果没有卦象数据，从状态中获取
+            if (!aiAnalysisState.gods) {
+                aiAnalysisState.gods = gods;
+                aiAnalysisState.question = question;
+                aiAnalysisState.numbers = numbers;
+            }
+            
+            // 如果已经分析过，直接显示结果
+            if (aiAnalysisState.deepseekAnalyzed) {
+                return;
+            }
+            
+            // 显示加载状态
+            deepseekContent.innerHTML = `
+                <div style="text-align: center; color: #ccc; padding: 40px;">
+                    <div style="font-size: 18px; margin-bottom: 10px;">🤖</div>
+                    <div>正在调用DeepSeek进行深度分析...</div>
+                    <div style="font-size: 12px; margin-top: 10px; color: #666;">
+                        基于卦象：${aiAnalysisState.gods.join(' → ')}<br>
+                        问题：${aiAnalysisState.question}
+                    </div>
+                </div>
+            `;
+            
+            try {
+                // 构建分析提示词
+                const analysisPrompt = `你是一个专业的小六壬卦象分析师。用户通过小六壬起卦，得到的卦象是：${aiAnalysisState.gods.join(' → ')}。
+
+测算问题：${aiAnalysisState.question}
+起卦数字：${aiAnalysisState.numbers.join('、')}
+当前时间：${new Date().toLocaleString('zh-CN')}
+
+请从以下几个方面进行详细分析：
+1. 卦象含义：解释每个神兆的吉凶寓意
+2. 整体运势：分析当前事情的整体发展趋势
+3. 时机分析：判断做事的有利时机
+4. 注意事项：指出需要防范的问题
+5. 具体建议：给出切实可行的行动建议
+
+请用温暖、专业、易懂的语言进行分析，字数控制在800-1200字左右。`;
+                
+                const response = await fetch(DEEPSEEK_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': DEEPSEEK_API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: DEEPSEEK_MODEL,
+                        messages: [
+                            {
+                                role: 'user',
+                                content: analysisPrompt
+                            }
+                        ],
+                        max_tokens: 2000,
+                        temperature: 0.7
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`DeepSeek API调用失败: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const aiResponse = data.choices[0].message.content;
+                
+                // 标记为已分析
+                aiAnalysisState.deepseekAnalyzed = true;
+                
+                // 显示AI分析结果
+                deepseekContent.innerHTML = `
+                    <div class="ai-analysis-result">
+                        <h3 style="color: #4CAF50; margin-bottom: 20px; display: flex; align-items: center;">
+                            <span style="margin-right: 8px;">🤖</span>
+                            DeepSeek AI深度分析
+                        </h3>
+                        <div class="ai-text" style="color: #ddd; line-height: 1.8; white-space: pre-wrap;">
+                            ${aiResponse}
+                        </div>
+                        <div class="ai-footer" style="margin-top: 30px; padding: 15px; background: #333; border-radius: 6px; color: #aaa; font-size: 12px;">
+                            <div style="text-align: center;">
+                                <strong>🤖 分析时间：</strong>${new Date().toLocaleString('zh-CN')}<br>
+                                <strong>🎯 卦象：</strong>${aiAnalysisState.gods.join(' → ')}<br>
+                                <strong>❓ 问题：</strong>${aiAnalysisState.question}<br>
+                                <strong style="color: #888; margin-top: 10px; display: block;">仅供参考娱乐，请理性对待</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('DeepSeek AI分析出错:', error);
+                deepseekContent.innerHTML = `
+                    <div style="text-align: center; color: #FF6B6B; padding: 40px;">
+                        <div style="font-size: 18px; margin-bottom: 10px;">❌</div>
+                        <div>DeepSeek AI分析服务暂时不可用</div>
+                        <div style="font-size: 12px; margin-top: 10px; color: #888;">
+                            ${error.message || '网络连接错误或API配置问题'}
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #333; border-radius: 6px; text-align: left;">
+                            <div style="color: #ccc; font-size: 14px;">
+                                <strong>手动配置方法：</strong><br>
+                                1. 请在代码中设置您的DeepSeek API密钥<br>
+                                2. 检查网络连接状态<br>
+                                3. 确认DeepSeek API服务正常
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // 标签页切换功能
+        function switchAITab(tabName) {
+            // 更新标签状态
+            document.querySelectorAll('.ai-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.ai-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 激活当前标签
+            const activeTab = document.getElementById(tabName + '-tab');
+            const activeContent = document.getElementById(tabName + '-content');
+            activeTab.classList.add('active');
+            activeContent.classList.add('active');
+            
+            // 更新状态
+            aiAnalysisState.currentTab = tabName;
+            
+            // 根据标签页调用相应的AI分析
+            if (tabName === 'deepseek' && !aiAnalysisState.deepseekAnalyzed && aiAnalysisState.gods) {
+                analyzeWithDeepSeek(aiAnalysisState.gods, aiAnalysisState.question, aiAnalysisState.numbers);
+            } else if (tabName === 'qwen' && !aiAnalysisState.qwenAnalyzed && aiAnalysisState.gods) {
+                analyzeWithQwen(aiAnalysisState.gods, aiAnalysisState.question, aiAnalysisState.numbers);
+            } else if (tabName === 'compare' && !aiAnalysisState.compareAnalyzed && aiAnalysisState.qwenAnalyzed && aiAnalysisState.deepseekAnalyzed) {
+                compareAnalyses();
+            }
+        }
+        
+        // 对比分析功能
+        async function compareAnalyses() {
+            const compareContent = document.getElementById('compare-analysis-content');
+            
+            // 获取前两个分析的结果
+            const qwenResultElement = document.getElementById('qwen-analysis-content');
+            const deepseekResultElement = document.getElementById('deepseek-analysis-content');
+            
+            const qwenText = qwenResultElement.querySelector('.ai-text');
+            const deepseekText = deepseekResultElement.querySelector('.ai-text');
+            
+            if (!qwenText || !deepseekText) {
+                compareContent.innerHTML = `
+                    <div style="text-align: center; color: #FFA726; padding: 40px;">
+                        <div style="font-size: 18px; margin-bottom: 10px;">⚠️</div>
+                        <div>请先完成前两个AI的分析，才能进行对比</div>
+                        <div style="font-size: 12px; margin-top: 10px; color: #888;">
+                            需要通义千问和DeepSeek都完成分析后，才能进行对比分析
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const qwenResult = qwenText.textContent.trim();
+            const deepseekResult = deepseekText.textContent.trim();
+            const gods = aiAnalysisState.gods;
+            const question = aiAnalysisState.question;
+            const numbers = aiAnalysisState.numbers;
+            
+            // 显示加载状态
+            compareContent.innerHTML = `
+                <div style="text-align: center; color: #ccc; padding: 40px;">
+                    <div style="font-size: 18px; margin-bottom: 10px;">🔍</div>
+                    <div>正在进行对比分析...</div>
+                    <div style="font-size: 12px; margin-top: 10px; color: #666;">
+                        基于卦象：${gods.join(' → ')}<br>
+                        问题：${question}
+                    </div>
+                </div>
+            `;
+            
+            try {
+                // 构建对比分析提示词
+                const comparisonPrompt = `你是一个专业的小六壬卦象对比分析师。你需要对两个不同AI引擎的卦象分析结果进行专业对比，并给出最终更合理、更准确的解答。
+                
+卦象信息：
+卦象序列：${gods.join(' → ')}
+测算问题：${question}
+起卦数字：${numbers.join('、')}
+当前时间：${new Date().toLocaleString('zh-CN')}
+
+两个AI的分析结果：
+
+【通义千问分析结果】：
+${qwenResult}
+
+【DeepSeek分析结果】：
+${deepseekResult}
+
+请从以下几个维度进行深入对比分析：
+1. 观点对比：分析两个分析在核心观点上的异同
+2. 准确性评估：基于传统小六壬理论，评估两种分析的准确性和合理性
+3. 补充完善：识别各自分析中的优点和不足
+4. 综合判断：综合两种分析的优点，给出最合理、最准确的最终解答
+5. 实用性建议：提供具体可行的行动建议
+
+请用专业、客观、严谨的分析风格，确保对比客观公正，最终结论具有实用价值。字数控制在1000-1500字。`;
+                
+                const response = await fetch(DASHSCOPE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${DASHSCOPE_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'qwen-max',
+                        messages: [
+                            {
+                                role: 'user',
+                                content: comparisonPrompt
+                            }
+                        ],
+                        max_tokens: 2500,
+                        temperature: 0.7
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`通义千问API调用失败: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const aiResponse = data.choices[0].message.content;
+                
+                // 标记为已分析
+                aiAnalysisState.compareAnalyzed = true;
+                
+                // 显示对比分析结果
+                compareContent.innerHTML = `
+                    <div class="ai-analysis-result">
+                        <h3 style="color: #4CAF50; margin-bottom: 20px; display: flex; align-items: center;">
+                            <span style="margin-right: 8px;">🔍</span>
+                            AI对比分析报告
+                        </h3>
+                        <div class="ai-text" style="color: #ddd; line-height: 1.8; white-space: pre-wrap;">
+                            ${aiResponse}
+                        </div>
+                        <div class="ai-footer" style="margin-top: 30px; padding: 15px; background: #333; border-radius: 6px; color: #aaa; font-size: 12px;">
+                            <div style="text-align: center;">
+                                <strong>🤖 对比分析时间：</strong>${new Date().toLocaleString('zh-CN')}<br>
+                                <strong>🎯 卦象：</strong>${gods.join(' → ')}<br>
+                                <strong>❓ 问题：</strong>${question}<br>
+                                <strong style="color: #888; margin-top: 10px; display: block;">仅供参考娱乐，请理性对待</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('对比分析出错:', error);
+                compareContent.innerHTML = `
+                    <div style="text-align: center; color: #FF6B6B; padding: 40px;">
+                        <div style="font-size: 18px; margin-bottom: 10px;">❌</div>
+                        <div>对比分析服务暂时不可用</div>
+                        <div style="font-size: 12px; margin-top: 10px; color: #888;">
+                            ${error.message || '网络连接错误或API配置问题'}
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #333; border-radius: 6px; text-align: left;">
+                            <div style="color: #ccc; font-size: 14px;">
+                                <strong>手动配置方法：</strong><br>
+                                1. 请确保前两个AI分析已完成<br>
                                 2. 检查网络连接状态<br>
                                 3. 确认通义千问API服务正常
                             </div>
@@ -1596,6 +1999,17 @@
                     </div>
                 `;
             }
+        }
+        
+        // 初始化标签页事件监听器
+        function initAITabs() {
+            const qwenTab = document.getElementById('qwen-tab');
+            const deepseekTab = document.getElementById('deepseek-tab');
+            const compareTab = document.getElementById('compare-tab');
+            
+            qwenTab.addEventListener('click', () => switchAITab('qwen'));
+            deepseekTab.addEventListener('click', () => switchAITab('deepseek'));
+            compareTab.addEventListener('click', () => switchAITab('compare'));
         }
         
     </script>
