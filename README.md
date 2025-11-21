@@ -115,13 +115,13 @@
 
 #### 通义千问配置
 ```javascript
-const DASHSCOPE_API_KEY = 'sk-644c0d791a2f4a06a1a42a521a826e71'; // 已预设
+const DASHSCOPE_API_KEY = 'sk-644***71'; // 已预设
 const DASHSCOPE_API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
 ```
 
 #### DeepSeek配置
 ```javascript
-const DEEPSEEK_API_KEY = 'sk-4bf2dc7c99c64177b9ab41eb68604be6'; // 已配置默认密钥
+const DEEPSEEK_API_KEY = 'sk-4bf***e6'; // 已配置默认密钥
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
 ```
 
